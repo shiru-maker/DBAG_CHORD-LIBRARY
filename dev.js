@@ -12,7 +12,7 @@ function init() {
 let songs = [], editingId = null;
 
 function buildForm() {
-  $("fKey").innerHTML = '<option value="">Key:</option>' + NOTES.map((n) => `<option>${n}</option>`).join("");
+  $("fKey").innerHTML = '<option value="">Key:</option>' + NOTES.flatMap((n) => [`<option value="${n}">${n}</option>`, `<option value="${n}m">${n}m</option>`]).join("");
   $("keyList").innerHTML = NOTES.map((n) => `<label><b>${n}</b><input data-key="${n}" placeholder="Singer"></label>`).join(""); // singer kada key
   buildKeyPicker();
 }
