@@ -1,0 +1,316 @@
+/* ===== MGA KULAY AT GLASS EFFECT (palitan dito kung gusto mo ng ibang itsura) ===== */
+:root {
+  --bg-dark: #070519;      /* pinakamadilim na background */
+  --bg-mid: #11113d;       /* mas matingkad na asul */
+  --text: #f2f4ff;
+  --chord: #6fe3ff;        /* kulay ng chords */
+  --accent: linear-gradient(90deg, #5b3fc0, #5bbfe0); /* kulay ng LINE UP button */
+
+  /* GLASSY: malabong salamin na bahagyang kita ang background */
+  --glass: linear-gradient(145deg, rgba(130, 150, 255, 0.18), rgba(60, 70, 170, 0.10));
+  --glass-border: 1px solid rgba(170, 195, 255, 0.20);   /* manipis na liwanag sa gilid */
+  --glass-blur: blur(16px) saturate(140%);                /* ang "blur" ng salamin */
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+
+  --row-a: linear-gradient(90deg, rgba(112, 82, 224, 0.85), rgba(40, 130, 175, 0.85)); /* purple-teal row */
+  --row-b: rgba(52, 68, 112, 0.80);                                                    /* madilim na row */
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--text);
+  font-family: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  background: radial-gradient(circle at 88% 92%, #162f68 0%, transparent 42%),
+              linear-gradient(135deg, var(--bg-mid), var(--bg-dark));
+  background-attachment: fixed;
+}
+
+/* CIRCUIT-BOARD na design sa kanang bahagi (decoration lang, hindi napipindot) */
+body::before {
+  content: ""; position: fixed; top: 0; right: 0; bottom: 0; width: 420px; z-index: 0; pointer-events: none;
+  background: no-repeat right center / auto 100%
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='700' viewBox='0 0 420 700' fill='none' stroke='%234fc3e8' stroke-width='3' stroke-opacity='.5'%3E%3Cpath d='M420 40H300l-40 40v120l-50 50'/%3E%3Cpath d='M420 260H340l-30 30v90'/%3E%3Cpath d='M420 520H330l-60 60v80H200'/%3E%3Cpath d='M420 620H380'/%3E%3Cg fill='%234fc3e8' fill-opacity='.7' stroke='none'%3E%3Ccircle cx='210' cy='250' r='9'/%3E%3Ccircle cx='310' cy='380' r='8'/%3E%3Ccircle cx='200' cy='660' r='10'/%3E%3Ccircle cx='260' cy='80' r='6'/%3E%3C/g%3E%3C/svg%3E");
+}
+/* Para nasa ibabaw ng circuit ang lahat ng laman */
+header, #layout { position: relative; z-index: 1; }
+
+/* ===== HEADER ===== */
+header { text-align: center; padding: 16px 70px 8px; }
+.glitch {
+  margin: 0; font-size: clamp(1.6rem, 5vw, 3.2rem); letter-spacing: 2px;
+  /* Glitch effect: dalawang kulay na anino sa magkabilang gilid */
+  text-shadow: 3px 0 #2fd0e0, -3px 0 #8a4fe0;
+}
+.church { margin: 4px 0 0; font-style: italic; font-size: 1.2rem; color: #a58cff; }
+.icon-btn { background: none; border: none; color: #cfd3e6; font-size: 2rem; cursor: pointer; }
+#settingsBtn { position: absolute; top: 14px; right: 24px; }   /* gear: kanan sa laptop */
+
+/* ===== LAYOUT (laptop): sidebar sa kaliwa, panel sa kanan ===== */
+#layout { display: flex; gap: 24px; padding: 16px 24px 24px; }
+#sidebar {
+  width: 310px; flex-shrink: 0; padding: 16px; border-radius: 28px;
+  background: var(--glass); border: var(--glass-border); box-shadow: var(--glass-shadow);
+  backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+}
+#panel {
+  flex: 1; padding: 24px 32px; border-radius: 28px;
+  /* Fixed ang taas ng panel, para ang chords box ang mag-scroll at hindi ang buong page */
+  height: calc(100vh - 150px); display: flex; flex-direction: column;
+  background: var(--glass); border: var(--glass-border); box-shadow: var(--glass-shadow);
+  backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+}
+#backBtn { display: none; }   /* nakatago sa laptop */
+
+#search {
+  width: 100%; padding: 14px 20px; border: none; border-radius: 30px;
+  font: italic 1.25rem "Cormorant Garamond", Georgia, serif;
+  background: rgba(224, 244, 248, 0.92); color: #1b2255; box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+
+/* ===== LISTAHAN NG KANTA ===== */
+#songBox {
+  margin-top: 16px; padding: 14px 0 20px; border-radius: 24px; overflow: hidden;
+  background: rgba(30, 45, 110, 0.35); border: var(--glass-border);
+}
+#songBox h2 { margin: 0 0 12px; text-align: center; font-style: italic; font-weight: 500; }
+/* Limitado ang taas: kapag mas marami ang kanta, mag-i-scroll */
+#songList { list-style: none; margin: 0; padding: 0 6px; max-height: 50vh; overflow-y: auto; }
+#songList li { display: flex; align-items: center; padding: 0 8px 0 14px; height: 50px; background: var(--row-a); }
+#songList li:nth-child(even) { background: var(--row-b); }
+.song-title { flex: 1; background: none; border: none; color: var(--text); font: 500 1.25rem "Cormorant Garamond", Georgia, serif; text-align: center; cursor: pointer; }
+.add-btn { width: 30px; height: 30px; border: none; border-radius: 50%; background: #3fae6a; color: #fff; font-size: 1.2rem; cursor: pointer; }
+.pill {
+  display: block; margin: 18px auto 0; padding: 12px 44px; border: none; border-radius: 30px;
+  background: var(--accent); color: #fff; font: italic 700 1.3rem "Cormorant Garamond", Georgia, serif;
+  cursor: pointer; box-shadow: 0 6px 18px rgba(91, 191, 224, 0.35);
+}
+
+/* ===== PANEL NG KANTA ===== */
+#songTitle { margin: 0 0 8px; font-style: italic; font-weight: 500; font-size: 2.1rem; }
+#panel p { margin: 4px 0; font-size: 1.25rem; }
+.step-btn {
+  width: 30px; height: 30px; border-radius: 8px; color: #fff; font-size: 1.1rem; cursor: pointer;
+  background: rgba(130, 150, 255, 0.22); border: var(--glass-border);   /* glassy rin ang +/- */
+}
+#trValue { display: inline-block; min-width: 34px; text-align: center; }
+/* white-space: pre = hindi gagalawin ang spacing at line breaks na ginawa mo */
+#chords { margin-top: 20px; font: 1.05rem/1.5 "Courier New", monospace; white-space: pre; }
+/* INVISIBLE SCROLL: pwedeng i-scroll (pataas/pababa at pakaliwa/pakanan) pero hindi kita ang scrollbar */
+#chords {
+  flex: 1; min-height: 0; overflow: auto;
+  scrollbar-width: none;            /* Firefox */
+  -ms-overflow-style: none;         /* lumang Edge */
+}
+#chords::-webkit-scrollbar { display: none; }   /* Chrome, Edge, Safari, phone */
+.chord { color: var(--chord); font-weight: bold; }   /* chords ay may ibang kulay sa lyrics */
+
+/* ===== PHONE (800px pababa): isang view lang kada pagkakataon ===== */
+@media (max-width: 800px) {
+  header { padding: 14px 56px 6px; }
+  #settingsBtn { right: auto; left: 14px; }          /* gear: kaliwa sa phone */
+  #layout { flex-direction: column; padding: 12px; }
+  #sidebar { width: 100%; }
+  #panel { display: none; }                          /* nakatago hanggang may pinindot na kanta */
+  body.show-song #sidebar { display: none; }
+  body.show-song #panel { display: flex; padding: 18px; height: calc(100vh - 110px); }
+  #backBtn { display: none; }                         /* tinanggal na ang back arrow sa phone */
+  body::before { width: 260px; }                     /* mas maliit ang circuit sa phone */
+}
+
+/* ===== STEP 2 & 3: LINE-UP PAGE, DEVELOPER PAGE ===== */
+#headBack { display: none; position: absolute; top: 12px; left: 24px; }
+body.sub #headBack { display: block; }
+body.sub #settingsBtn,
+body.sub .church { display: none; }          /* gear at church name: main page lang */
+.minus-btn { width: 30px; height: 30px; border: none; border-radius: 50%; background: #d9453b; color: #fff; font-size: 1.2rem; cursor: pointer; }
+.empty { justify-content: center; font-style: italic; opacity: .7; }
+#dots { display: none; justify-content: center; gap: 8px; margin-top: 12px; }
+.dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255, 255, 255, .4); }
+
+#dev { display: block; position: relative; z-index: 1; padding: 8px 24px 24px; max-width: 1200px; margin: 0 auto; }
+#dev input, #dev select, #dev textarea {
+  padding: 12px 18px; border-radius: 22px; color: var(--text); font: 1.15rem "Cormorant Garamond", Georgia, serif;
+  background: rgba(20, 25, 90, .55); border: var(--glass-border); backdrop-filter: var(--glass-blur);
+}
+#dev option { color: #111; }
+#dev .row { display: flex; gap: 14px; margin-bottom: 14px; }
+#dev .row input { flex: 1; min-width: 0; }
+#dev .row.top { align-items: stretch; }
+#fChords { flex: 1; min-height: 52vh; resize: vertical; font: 1.05rem/1.5 "Courier New", monospace; white-space: pre; border-radius: 26px; }
+#keyList { width: 250px; padding: 10px; border-radius: 22px; background: var(--glass); border: var(--glass-border); max-height: 52vh; overflow: auto; scrollbar-width: none; }
+#keyList::-webkit-scrollbar { display: none; }
+#keyList label { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+#keyList b { width: 30px; text-align: center; color: var(--chord); }
+#keyList input { flex: 1; min-width: 0; padding: 6px 12px; font-size: 1rem; border-radius: 12px; }
+.actions { display: flex; justify-content: flex-end; gap: 14px; margin-top: 14px; }
+.actions .pill { margin: 0; padding: 12px 36px; }
+.pill.grey { background: linear-gradient(90deg, #5a5f78, #7b8099); box-shadow: none; }
+
+@media (max-width: 800px) {
+  #headBack { left: 14px; }
+  body.page-lineup #dots { display: flex; }
+  #dev { padding: 8px 12px 20px; }
+  #dev .row, #dev .row.top { flex-direction: column; }
+  #keyList { width: 100%; max-height: 30vh; }
+  #fChords { min-height: 40vh; }
+}
+
+/* Mga link na mukhang button */
+a.pill, a.icon-btn { text-decoration: none; }
+a.pill { width: fit-content; }
+a#headBack { color: #9fe3ff; line-height: 1; }
+#songList li:empty { height: 50px; }   /* bakanteng slot sa Line-up */
+
+/* ===== INVISIBLE SCROLL SA LAHAT: pwede pa ring mag-scroll pero walang nakikitang scrollbar ===== */
+html, body, * { scrollbar-width: none; -ms-overflow-style: none; }   /* Firefox at lumang Edge */
+*::-webkit-scrollbar { display: none; width: 0; height: 0; }        /* Chrome, Edge, Safari, phone */
+
+/* ===== CHORDS/LYRICS BOX: mala-salamin na gray-purple na box na may circuit sa kanang baba ===== */
+#chords {
+  padding: 22px 24px; border-radius: 30px; border: var(--glass-border);
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='700' viewBox='0 0 420 700' fill='none' stroke='%234fc3e8' stroke-width='3' stroke-opacity='.5'%3E%3Cpath d='M420 40H300l-40 40v120l-50 50'/%3E%3Cpath d='M420 260H340l-30 30v90'/%3E%3Cpath d='M420 520H330l-60 60v80H200'/%3E%3Cpath d='M420 620H380'/%3E%3Cg fill='%234fc3e8' fill-opacity='.7' stroke='none'%3E%3Ccircle cx='210' cy='250' r='9'/%3E%3Ccircle cx='310' cy='380' r='8'/%3E%3Ccircle cx='200' cy='660' r='10'/%3E%3Ccircle cx='260' cy='80' r='6'/%3E%3C/g%3E%3C/svg%3E") no-repeat right bottom / auto 75%,        /* circuit design */
+              linear-gradient(155deg, rgba(88, 98, 132, .92), rgba(94, 78, 126, .92));   /* kulay ng box */
+  box-shadow: var(--glass-shadow);
+}
+
+/* ===== GUMAGALAWENG ELECTRICITY SA BACKGROUND (malabo / blurred) ===== */
+body::after {
+  content: ""; position: fixed; inset: -20%; z-index: 0; pointer-events: none;
+  /* Mga ilaw na kulay cyan at purple, malabo gamit ang blur */
+  background:
+    radial-gradient(circle at 20% 30%, rgba(79, 195, 232, .32), transparent 22%),
+    radial-gradient(circle at 75% 20%, rgba(138, 79, 224, .32), transparent 20%),
+    radial-gradient(circle at 60% 80%, rgba(47, 208, 224, .28), transparent 24%),
+    radial-gradient(circle at 10% 85%, rgba(110, 80, 230, .26), transparent 22%);
+  filter: blur(50px);
+  /* electric = dahan-dahang gumagalaw; flicker = bahagyang kumikislap na parang kuryente */
+  animation: electric 14s ease-in-out infinite alternate, flicker 3.2s steps(1) infinite;
+}
+@keyframes electric {
+  0%   { transform: translate(0, 0) scale(1); }
+  33%  { transform: translate(6%, -5%) scale(1.15) rotate(4deg); }
+  66%  { transform: translate(-5%, 6%) scale(1.05) rotate(-3deg); }
+  100% { transform: translate(4%, 4%) scale(1.2); }
+}
+@keyframes flicker { 0%, 100% { opacity: .9; } 8% { opacity: .5; } 10% { opacity: 1; } 55% { opacity: .75; } 57% { opacity: 1; } }
+/* Kung naka-"reduce motion" ang phone/laptop, titigil ang galaw */
+@media (prefers-reduced-motion: reduce) { body::after { animation: none; } }
+
+/* ===== DELETE PANEL ===== */
+.pill.red { background: linear-gradient(90deg, #b8322b, #e0615a); box-shadow: none; }
+#delPanel {
+  display: none; flex-direction: column; position: fixed; top: 110px; right: 24px; width: 310px;
+  max-height: calc(100vh - 140px); z-index: 5; padding: 16px; border-radius: 28px;
+  background: linear-gradient(145deg, rgba(60, 70, 170, .85), rgba(30, 35, 100, .9));
+  border: var(--glass-border); box-shadow: var(--glass-shadow);
+  backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+}
+#delPanel.open { display: flex; }
+#delSearch {
+  width: 100%; padding: 12px 18px; border: none; border-radius: 30px;
+  font: italic 1.2rem "Cormorant Garamond", Georgia, serif;
+  background: rgba(224, 244, 248, 0.92); color: #1b2255; box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+#delPanel h2 { margin: 14px 0 10px; text-align: center; font-style: italic; font-weight: 500; }
+#delList { list-style: none; margin: 0; padding: 0; overflow-y: auto; flex: 1; border-radius: 16px; }
+#delList li { display: flex; align-items: center; padding: 0 8px 0 14px; height: 50px; background: var(--row-a); }
+#delList li:nth-child(even) { background: var(--row-b); }
+.pick-title { flex: 1; background: none; border: none; color: var(--text); text-align: center; cursor: pointer; font: 500 1.25rem "Cormorant Garamond", Georgia, serif; }
+#delList li.editing { outline: 2px solid #6fe3ff; outline-offset: -2px; }
+#newBtn { margin: 12px auto 0; padding: 8px 24px; font-size: 1.1rem; }
+.x-btn { width: 30px; height: 30px; border: none; border-radius: 50%; background: #d9453b; color: #fff; font-size: 1.3rem; line-height: 1; cursor: pointer; }
+@media (max-width: 800px) {
+  #delPanel { left: 12px; right: 12px; width: auto; top: 90px; }
+}
+
+/* ===== PASSWORD BOX (glassy, nasa loob ng page) ===== */
+.pw-overlay {
+  position: fixed; inset: 0; z-index: 50; display: flex; align-items: center; justify-content: center; padding: 16px;
+  visibility: visible;                       /* kita kahit nakatago pa ang page sa likod */
+  background: rgba(7, 5, 25, .55); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+}
+.pw-card {
+  width: min(92vw, 380px); padding: 30px 28px 26px; border-radius: 28px; text-align: center;
+  background: linear-gradient(145deg, rgba(90, 100, 210, .32), rgba(40, 45, 130, .55));
+  border: var(--glass-border); box-shadow: var(--glass-shadow), 0 0 40px rgba(91, 191, 224, .18);
+  backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+}
+.pw-lock { font-size: 2.2rem; line-height: 1; text-shadow: 0 0 18px rgba(111, 227, 255, .7); }
+.pw-card h2 { margin: 10px 0 16px; font-style: italic; font-weight: 500; font-size: 1.8rem; text-shadow: 2px 0 #2fd0e0, -2px 0 #8a4fe0; }
+.pw-card input {
+  width: 100%; padding: 13px 20px; border: none; border-radius: 30px; text-align: center; letter-spacing: 3px;
+  font: 1.25rem "Cormorant Garamond", Georgia, serif;
+  background: rgba(224, 244, 248, 0.92); color: #1b2255; box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+.pw-card input::placeholder { letter-spacing: 0; font-style: italic; }
+.pw-err { min-height: 1.4em; margin: 8px 0 4px; color: #ff9a9a; font-style: italic; }
+.pw-actions { display: flex; justify-content: center; gap: 12px; margin-top: 6px; }
+.pw-actions .pill { margin: 0; padding: 10px 26px; font-size: 1.15rem; }
+.pw-card.shake { animation: pwshake .4s; }
+@keyframes pwshake { 20%, 60% { transform: translateX(-9px); } 40%, 80% { transform: translateX(9px); } }
+
+/* ===== TOAST (error lang, nasa loob ng page) ===== */
+.toast {
+  position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); z-index: 60; max-width: 90vw;
+  padding: 10px 22px; border-radius: 24px; font-style: italic; font-size: 1.1rem; color: #fff;
+  background: rgba(150, 40, 50, .85); border: var(--glass-border); box-shadow: var(--glass-shadow);
+  backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); visibility: visible;
+}
+
+/* ===== SWIPE SA PHONE: buong set ang gumagalaw, kaya walang side-scroll sa chords ===== */
+@media (max-width: 800px) {
+  #panel { touch-action: pan-y; }
+  #chords { overflow-x: hidden; touch-action: pan-y; }
+}
+
+.step-btn:disabled { opacity: .35; cursor: not-allowed; }
+
+/* ===== PHONE: kasya sa isang hanay ang EDIT / CANCEL / SAVE ===== */
+@media (max-width: 800px) {
+  .actions { gap: 8px; }
+  .actions .pill { flex: 1; padding: 11px 4px; font-size: 1.05rem; text-align: center; white-space: nowrap; }
+}
+
+.pw-card input + input { margin-top: 10px; }
+.pw-card input[type=email] { letter-spacing: 0; }
+
+/* ===== KEY PICKER (glassy dropdown) ===== */
+#keyPick { position: relative; display: flex; min-width: 170px; }
+#keyPickBtn {
+  flex: 1; display: flex; align-items: center; justify-content: space-between; gap: 12px; cursor: pointer; text-align: left;
+  padding: 12px 18px; border-radius: 22px; color: var(--text); font: 1.15rem "Cormorant Garamond", Georgia, serif;
+  background: rgba(20, 25, 90, .55); border: var(--glass-border); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+}
+#keyPickBtn::after { content: "\25BE"; display: inline-block; color: var(--chord); transition: transform .2s; }
+#keyPick.open #keyPickBtn::after { transform: rotate(180deg); }
+#keyPickPanel {
+  display: none; position: absolute; top: calc(100% + 8px); left: 0; z-index: 8; width: 100%; min-width: 230px; padding: 12px;
+  grid-template-columns: repeat(4, 1fr); gap: 8px; border-radius: 24px;
+  background: linear-gradient(145deg, rgba(60, 70, 170, .92), rgba(30, 35, 100, .95));
+  border: var(--glass-border); box-shadow: var(--glass-shadow), 0 0 30px rgba(91, 191, 224, .18);
+  backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+}
+#keyPick.open #keyPickPanel { display: grid; animation: keyPop .18s ease-out; }
+@keyframes keyPop { from { opacity: 0; transform: translateY(-6px) scale(.97); } to { opacity: 1; transform: none; } }
+#keyPickPanel button {
+  padding: 10px 0; border: var(--glass-border); border-radius: 14px; cursor: pointer;
+  background: rgba(130, 150, 255, .18); color: var(--chord); font: 700 1.15rem "Cormorant Garamond", Georgia, serif;
+}
+#keyPickPanel button:active { transform: scale(.95); }
+#keyPickPanel button.sel { background: var(--accent); color: #fff; border-color: transparent; box-shadow: 0 4px 14px rgba(91, 191, 224, .35); }
+@media (max-width: 800px) { #keyPick { min-width: 0; } #keyPickPanel { min-width: 0; } }
+
+/* ===== LOGOUT BUTTON (Developer Page lang): kanan sa taas, laptop at phone ===== */
+#logoutBtn { display: none; }
+body.page-dev #logoutBtn {
+  display: block; position: absolute; top: 20px; right: 24px;
+  font: 700 1.1rem "Cormorant Garamond", Georgia, serif; letter-spacing: 1px; color: #cfd3e6;
+  padding: 6px 14px; border-radius: 18px; border: var(--glass-border); background: rgba(20, 25, 90, .45);
+}
+body.page-dev #logoutBtn:hover { color: #fff; background: rgba(217, 69, 59, .55); }
+@media (max-width: 800px) {
+  body.page-dev #logoutBtn { top: 16px; right: 10px; font-size: .85rem; padding: 4px 8px; }
+}

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chord Library</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="page-main">
+  <!-- HEADER: gear (Developer Page), title, at pangalan ng church -->
+  <header>
+    <button id="settingsBtn" class="icon-btn" title="Settings">&#9881;</button>
+    <div class="titles">
+      <h1 class="glitch">CHORD LIBRARY</h1>
+      <p class="church">Dampalit Bethel Assemblies of God</p>
+    </div>
+  </header>
+  <div id="layout">
+    <aside id="sidebar">
+      <input id="search" type="search" placeholder="Search" autocomplete="off">
+      <div id="songBox">
+        <h2>Song Lists</h2>
+        <ul id="songList"></ul>
+        <!-- LINE UP = pupunta sa hiwalay na page (lineup.html) -->
+        <a id="lineupBtn" class="pill" href="lineup.html">LINE UP</a>
+      </div>
+    </aside>
+    <main id="panel">
+      <button id="backBtn" class="icon-btn">&#8617;</button>
+      <h2 id="songTitle">Title of Song</h2>
+      <p id="songKey">Key:</p>
+      <p id="songBpm">Bpm:</p>
+      <p class="transpose">Transpose:
+        <button id="trMinus" class="step-btn">&minus;</button>
+        <span id="trValue">0</span>
+        <button id="trPlus" class="step-btn">+</button>
+      </p>
+      <pre id="chords"></pre>
+    </main>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+  <script src="db.js"></script>
+  <script src="common.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

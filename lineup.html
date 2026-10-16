@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chord Library</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="page-lineup sub">
+  <header>
+    <!-- Back = bumalik sa Chord Library -->
+    <a id="headBack" class="icon-btn" href="index.html" title="Back">&#8617;</a>
+    <div class="titles"><h1 class="glitch">Sunday Line-up</h1></div>
+  </header>
+  <div id="layout">
+    <aside id="sidebar">
+      <div id="songBox">
+        <h2>Set of Songs</h2>
+        <ul id="songList"></ul>
+        <div id="dots"></div>
+      </div>
+    </aside>
+    <main id="panel">
+      <button id="backBtn" class="icon-btn">&#8617;</button>
+      <h2 id="songTitle">Title of Song</h2>
+      <p id="songKey">Key:</p>
+      <p id="songBpm">Bpm:</p>
+      <p class="transpose">Transpose:
+        <button id="trMinus" class="step-btn">&minus;</button>
+        <span id="trValue">0</span>
+        <button id="trPlus" class="step-btn">+</button>
+      </p>
+      <pre id="chords"></pre>
+    </main>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+  <script src="db.js"></script>
+  <script src="common.js"></script>
+  <script src="lineup.js"></script>
+</body>
+</html>

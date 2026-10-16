@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chord Library</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="page-dev sub" style="visibility:hidden">
+  <header>
+    <a id="headBack" class="icon-btn" href="index.html" title="Back">&#8617;</a>
+    <button id="logoutBtn" class="icon-btn" title="Logout">LOGOUT</button>
+    <div class="titles"><h1 class="glitch">DEVELOPER PAGE</h1></div>
+  </header>
+  <section id="dev">
+    <div class="row"><input id="fTitle" placeholder="Song Title"><select id="fKey"></select></div>
+    <div class="row"><input id="fBy" placeholder="By:"><input id="fBpm" placeholder="BPM:" inputmode="numeric"></div>
+    <div class="row top">
+      <!-- wrap="off" para hindi masira ang pagkaka-align ng chords -->
+      <textarea id="fChords" wrap="off" placeholder="Enter chords and lyrics here..."></textarea>
+      <div id="keyList"></div>
+    </div>
+    <div class="actions">
+      <button id="editBtn" class="pill">EDIT</button>
+      <a id="cancelBtn" class="pill grey" href="index.html">CANCEL</a>
+      <button id="saveBtn" class="pill">SAVE</button>
+    </div>
+  </section>
+
+  <!-- Panel sa kanan: lalabas kapag pinindot ang EDIT -->
+  <aside id="delPanel">
+    <input id="delSearch" type="search" placeholder="Search" autocomplete="off">
+    <h2>Edit Songs</h2>
+    <button id="newBtn" class="pill grey">+ New song</button>
+    <ul id="delList"></ul>
+  </aside>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+  <script src="db.js"></script>
+  <script src="common.js"></script>
+  <script src="dev.js"></script>
+</body>
+</html>
