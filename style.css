@@ -28,22 +28,33 @@ body {
   background-attachment: fixed;
 }
 
-/* Banayad na mga bula na umaangat sa background. */
+/* Underwater ambience: banayad na alon at malalabong isdang dumaraan. */
 body::before {
-  content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
-  background-image:
-    radial-gradient(circle, rgba(111, 227, 255, .22) 0 3px, transparent 4px),
-    radial-gradient(circle, rgba(190, 160, 255, .20) 0 5px, transparent 6px),
-    radial-gradient(circle, rgba(111, 227, 255, .16) 0 2px, transparent 3px),
-    radial-gradient(circle, rgba(190, 160, 255, .16) 0 4px, transparent 5px);
-  background-size: 180px 240px, 260px 320px, 310px 280px, 220px 360px;
-  background-position: 10% 110%, 40% 120%, 75% 105%, 95% 130%;
-  background-repeat: repeat;
-  animation: bubbles-rise 22s linear infinite;
+  content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+  background:
+    radial-gradient(ellipse at 18% 78%, rgba(29, 143, 184, .10), transparent 32%),
+    radial-gradient(ellipse at 82% 32%, rgba(99, 104, 202, .10), transparent 36%);
 }
-@keyframes bubbles-rise {
-  from { background-position: 10% 110%, 40% 120%, 75% 105%, 95% 130%; }
-  to { background-position: 10% -130%, 40% -200%, 75% -175%, 95% -230%; }
+body::after {
+  content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  opacity: .30; filter: blur(2px);
+  background-repeat: no-repeat;
+  background-image:
+    radial-gradient(ellipse 32px 13px at 50% 50%, rgba(111,227,255,.40) 0 53%, transparent 58%),
+    conic-gradient(from 135deg at 15% 50%, transparent 0 25%, rgba(111,227,255,.34) 26% 49%, transparent 50%),
+    radial-gradient(ellipse 25px 10px at 50% 50%, rgba(190,160,255,.34) 0 52%, transparent 58%),
+    conic-gradient(from 135deg at 15% 50%, transparent 0 25%, rgba(190,160,255,.30) 26% 49%, transparent 50%),
+    radial-gradient(ellipse 19px 8px at 50% 50%, rgba(111,227,255,.30) 0 52%, transparent 58%),
+    conic-gradient(from 135deg at 15% 50%, transparent 0 25%, rgba(111,227,255,.28) 26% 49%, transparent 50%);
+  background-size: 90px 40px, 90px 40px, 72px 34px, 72px 34px, 58px 28px, 58px 28px;
+  background-position: -120px 28%, -120px 28%, calc(100% + 100px) 55%, calc(100% + 100px) 55%, -90px 78%, -90px 78%;
+  animation: fish-swim 34s linear infinite;
+}
+@keyframes fish-swim {
+  0% { background-position: -120px 28%, -120px 28%, calc(100% + 100px) 55%, calc(100% + 100px) 55%, -90px 78%, -90px 78%; }
+  48% { background-position: calc(100% + 120px) 32%, calc(100% + 120px) 32%, -100px 58%, -100px 58%, calc(100% + 90px) 74%, calc(100% + 90px) 74%; }
+  52% { background-position: calc(100% + 120px) 32%, calc(100% + 120px) 32%, -100px 58%, -100px 58%, calc(100% + 90px) 74%, calc(100% + 90px) 74%; }
+  100% { background-position: -120px 28%, -120px 28%, calc(100% + 100px) 55%, calc(100% + 100px) 55%, -90px 78%, -90px 78%; }
 }
 /* Para nasa ibabaw ng background animation ang lahat ng laman */
 header, #layout { position: relative; z-index: 1; }
@@ -130,6 +141,9 @@ header { text-align: center; padding: 16px 70px 8px; }
   body.show-song #panel { display: flex; padding: 18px; height: calc(100vh - 110px); }
   #backBtn { display: none; }                         /* tinanggal na ang back arrow sa phone */
   /* Sunday Line-up: phone lang, piliin ang kanta para dumiretso sa chords. */
+  body.page-lineup #songBox h2 { display: none; }
+  body.page-lineup #songBox { margin-top: 0; padding: 0; border: 0; background: transparent; }
+  body.page-lineup #songList { padding: 0; max-height: calc(100vh - 170px); }
   body.page-lineup.lineup-song #sidebar { display: none; }
   body.page-lineup.lineup-song #panel { display: flex; padding: 18px; height: calc(100vh - 90px); }
   body.page-lineup #backBtn { display: block; align-self: flex-start; margin: -8px 0 4px -8px; }
@@ -209,9 +223,7 @@ body::after {
 }
 @keyframes flicker { 0%, 100% { opacity: .9; } 8% { opacity: .5; } 10% { opacity: 1; } 55% { opacity: .75; } 57% { opacity: 1; } }
 /* Kung naka-"reduce motion" ang phone/laptop, titigil ang galaw */
-@media (prefers-reduced-motion: reduce) {
-  body::before, body::after { animation: none; }
-}
+@media (prefers-reduced-motion: reduce) { body::after { animation: none; } }
 
 /* ===== DELETE PANEL ===== */
 .pill.red { background: linear-gradient(90deg, #b8322b, #e0615a); box-shadow: none; }
