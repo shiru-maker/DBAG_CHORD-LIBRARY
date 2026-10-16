@@ -118,6 +118,11 @@ header { text-align: center; padding: 16px 70px 8px; }
   body.show-song #panel { display: flex; padding: 18px; height: calc(100vh - 110px); }
   #backBtn { display: none; }                         /* tinanggal na ang back arrow sa phone */
   body::before { width: 260px; }                     /* mas maliit ang circuit sa phone */
+
+  /* Sunday Line-up: phone lang, piliin ang kanta para dumiretso sa chords. */
+  body.page-lineup.lineup-song #sidebar { display: none; }
+  body.page-lineup.lineup-song #panel { display: flex; padding: 18px; height: calc(100vh - 90px); }
+  body.page-lineup #backBtn { display: block; align-self: flex-start; margin: -8px 0 4px -8px; }
 }
 
 /* ===== STEP 2 & 3: LINE-UP PAGE, DEVELOPER PAGE ===== */
@@ -151,7 +156,6 @@ body.sub .church { display: none; }          /* gear at church name: main page l
 
 @media (max-width: 800px) {
   #headBack { left: 14px; }
-  body.page-lineup #dots { display: flex; }
   #dev { padding: 8px 12px 20px; }
   #dev .row, #dev .row.top { flex-direction: column; }
   #keyList { width: 100%; max-height: 30vh; }
@@ -162,7 +166,6 @@ body.sub .church { display: none; }          /* gear at church name: main page l
 a.pill, a.icon-btn { text-decoration: none; }
 a.pill { width: fit-content; }
 a#headBack { color: #9fe3ff; line-height: 1; }
-#songList li:empty { height: 50px; }   /* bakanteng slot sa Line-up */
 
 /* ===== INVISIBLE SCROLL SA LAHAT: pwede pa ring mag-scroll pero walang nakikitang scrollbar ===== */
 html, body, * { scrollbar-width: none; -ms-overflow-style: none; }   /* Firefox at lumang Edge */

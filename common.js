@@ -5,10 +5,10 @@
 const $ = (id) => document.getElementById(id);
 const NOTES = ["A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"];
 const FLATS = { Bb: "A#", Db: "C#", Eb: "D#", Gb: "F#", Ab: "G#" };
-const CHORD = /^([A-G][#b]?)((?:maj|min|dim|aug|sus|add|m|M)?\d*(?:sus\d?|add\d+)?)(?:\/([A-G][#b]?))?$/;
+const CHORD = /^([A-G][#b]?)((?:maj|min|dim|aug|sus|add|m|M)?\d*(?:sus\d?|add\d+)?)(?:\/([A-G][#b]?)((?:maj|min|dim|aug|sus|add|m|M)?\d*(?:sus\d?|add\d+)?))?$/;
 const shift = (n, st) => NOTES[(((NOTES.indexOf(FLATS[n] || n) + st) % 12) + 12) % 12];
 const isChordLine = (l) => l.trim() !== "" && l.trim().split(/\s+/).every((w) => CHORD.test(w)); // lahat chord = chord line
-const transposeLine = (l, st) => l.replace(/\S+/g, (w) => { const m = w.match(CHORD); return shift(m[1], st) + m[2] + (m[3] ? "/" + shift(m[3], st) : ""); });
+const transposeLine = (l, st) => l.replace(/\S+/g, (w) => { const m = w.match(CHORD); return shift(m[1], st) + m[2] + (m[3] ? "/" + shift(m[3], st) + m[4] : ""); });
 const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
 // Maliit na mensahe sa loob ng page (para sa error lang), kusang nawawala
@@ -81,7 +81,7 @@ function renderLine(l, st) {
       const sp = parts[i + 1] || "", nxt = parts[i + 2];
       if (sp && sp.length < 2 && nxt !== undefined && !CHORD.test(nxt)) return esc(w);
     }
-    const t = shift(m[1], st) + m[2] + (m[3] ? "/" + shift(m[3], st) : "");
+    const t = shift(m[1], st) + m[2] + (m[3] ? "/" + shift(m[3], st) + m[4] : "");
     return '<span class="chord">' + esc(br ? "[" + t + "]" : t) + "</span>";
   }).join("");
 }
