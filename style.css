@@ -36,25 +36,19 @@ body::before {
     radial-gradient(ellipse at 82% 32%, rgba(99, 104, 202, .10), transparent 36%);
 }
 body::after {
-  content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
-  opacity: .30; filter: blur(2px);
+  content: ""; position: fixed; inset: 0; z-index: 2; pointer-events: none;
+  opacity: .58; filter: blur(1px);
   background-repeat: no-repeat;
   background-image:
-    radial-gradient(ellipse 32px 13px at 50% 50%, rgba(111,227,255,.40) 0 53%, transparent 58%),
-    conic-gradient(from 135deg at 15% 50%, transparent 0 25%, rgba(111,227,255,.34) 26% 49%, transparent 50%),
-    radial-gradient(ellipse 25px 10px at 50% 50%, rgba(190,160,255,.34) 0 52%, transparent 58%),
-    conic-gradient(from 135deg at 15% 50%, transparent 0 25%, rgba(190,160,255,.30) 26% 49%, transparent 50%),
-    radial-gradient(ellipse 19px 8px at 50% 50%, rgba(111,227,255,.30) 0 52%, transparent 58%),
-    conic-gradient(from 135deg at 15% 50%, transparent 0 25%, rgba(111,227,255,.28) 26% 49%, transparent 50%);
-  background-size: 90px 40px, 90px 40px, 72px 34px, 72px 34px, 58px 28px, 58px 28px;
-  background-position: -120px 28%, -120px 28%, calc(100% + 100px) 55%, calc(100% + 100px) 55%, -90px 78%, -90px 78%;
-  animation: fish-swim 34s linear infinite;
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 140 70'%3E%3Cpath fill='%236fe3ff' fill-opacity='.62' d='M8 35C32 5 76 7 104 35 76 63 32 65 8 35Zm96 0 30-25v50Z'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 110 55'%3E%3Cpath fill='%23c5a8ff' fill-opacity='.58' d='M7 28C27 5 61 6 82 28 61 49 27 50 7 28Zm75 0 24-20v40Z'/%3E%3C/svg%3E");
+  background-size: 140px 70px, 110px 55px;
+  background-position: -160px 32%, calc(100% + 130px) 68%;
+  animation: fish-swim 20s linear infinite;
 }
 @keyframes fish-swim {
-  0% { background-position: -120px 28%, -120px 28%, calc(100% + 100px) 55%, calc(100% + 100px) 55%, -90px 78%, -90px 78%; }
-  48% { background-position: calc(100% + 120px) 32%, calc(100% + 120px) 32%, -100px 58%, -100px 58%, calc(100% + 90px) 74%, calc(100% + 90px) 74%; }
-  52% { background-position: calc(100% + 120px) 32%, calc(100% + 120px) 32%, -100px 58%, -100px 58%, calc(100% + 90px) 74%, calc(100% + 90px) 74%; }
-  100% { background-position: -120px 28%, -120px 28%, calc(100% + 100px) 55%, calc(100% + 100px) 55%, -90px 78%, -90px 78%; }
+  from { background-position: -160px 32%, calc(100% + 130px) 68%; }
+  to { background-position: calc(100% + 160px) 32%, -140px 68%; }
 }
 /* Para nasa ibabaw ng background animation ang lahat ng laman */
 header, #layout { position: relative; z-index: 1; }
@@ -202,28 +196,8 @@ html, body, * { scrollbar-width: none; -ms-overflow-style: none; }   /* Firefox 
   box-shadow: var(--glass-shadow);
 }
 
-/* ===== GUMAGALAWENG ELECTRICITY SA BACKGROUND (malabo / blurred) ===== */
-body::after {
-  content: ""; position: fixed; inset: -20%; z-index: 0; pointer-events: none;
-  /* Mga ilaw na kulay cyan at purple, malabo gamit ang blur */
-  background:
-    radial-gradient(circle at 20% 30%, rgba(79, 195, 232, .32), transparent 22%),
-    radial-gradient(circle at 75% 20%, rgba(138, 79, 224, .32), transparent 20%),
-    radial-gradient(circle at 60% 80%, rgba(47, 208, 224, .28), transparent 24%),
-    radial-gradient(circle at 10% 85%, rgba(110, 80, 230, .26), transparent 22%);
-  filter: blur(50px);
-  /* electric = dahan-dahang gumagalaw; flicker = bahagyang kumikislap na parang kuryente */
-  animation: electric 14s ease-in-out infinite alternate, flicker 3.2s steps(1) infinite;
-}
-@keyframes electric {
-  0%   { transform: translate(0, 0) scale(1); }
-  33%  { transform: translate(6%, -5%) scale(1.15) rotate(4deg); }
-  66%  { transform: translate(-5%, 6%) scale(1.05) rotate(-3deg); }
-  100% { transform: translate(4%, 4%) scale(1.2); }
-}
-@keyframes flicker { 0%, 100% { opacity: .9; } 8% { opacity: .5; } 10% { opacity: 1; } 55% { opacity: .75; } 57% { opacity: 1; } }
-/* Kung naka-"reduce motion" ang phone/laptop, titigil ang galaw */
-@media (prefers-reduced-motion: reduce) { body::after { animation: none; } }
+/* Bubbles and fish stop moving when reduced motion is enabled. */
+@media (prefers-reduced-motion: reduce) { body::before, body::after { animation: none; } }
 
 /* ===== DELETE PANEL ===== */
 .pill.red { background: linear-gradient(90deg, #b8322b, #e0615a); box-shadow: none; }
