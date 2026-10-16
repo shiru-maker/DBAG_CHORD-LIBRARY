@@ -28,14 +28,28 @@ body {
   background-attachment: fixed;
 }
 
-/* CIRCUIT-BOARD na design sa kanang bahagi (static background decoration). */
+/* Aquarium ambience: malabong seaweed at sea creatures sa likod ng content. */
 body::before {
-  content: ""; position: fixed; top: 0; right: 0; bottom: 0; width: 420px; z-index: 0; pointer-events: none;
-  opacity: .12;
-  background: no-repeat right center / auto 100%
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='700' viewBox='0 0 420 700' fill='none' stroke='%234fc3e8' stroke-width='3' stroke-opacity='.5'%3E%3Cpath d='M420 40H300l-40 40v120l-50 50'/%3E%3Cpath d='M420 260H340l-30 30v90'/%3E%3Cpath d='M420 520H330l-60 60v80H200'/%3E%3Cpath d='M420 620H380'/%3E%3Cg fill='%234fc3e8' fill-opacity='.7' stroke='none'%3E%3Ccircle cx='210' cy='250' r='9'/%3E%3Ccircle cx='310' cy='380' r='8'/%3E%3Ccircle cx='200' cy='660' r='10'/%3E%3Ccircle cx='260' cy='80' r='6'/%3E%3C/g%3E%3C/svg%3E");
+  content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  opacity: .32; filter: blur(2px);
+  background: no-repeat bottom / 100% 42% url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 360' preserveAspectRatio='none'%3E%3Cg fill='none' stroke='%234fc3b0' stroke-opacity='.6' stroke-width='12' stroke-linecap='round'%3E%3Cpath d='M35 360Q50 290 28 230Q62 268 70 310Q78 240 108 205Q92 280 105 360M170 360Q150 285 178 250Q207 275 200 330Q222 258 250 235Q231 302 250 360M690 360Q710 290 680 238Q722 274 730 325Q744 250 775 210Q758 290 772 360M825 360Q800 302 822 270Q850 290 850 340Q866 280 895 260Q876 320 900 360'/%3E%3C/g%3E%3C/svg%3E");
 }
-/* Para nasa ibabaw ng circuit ang lahat ng laman */
+body::after {
+  content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  opacity: .34; filter: blur(2.5px); background-repeat: no-repeat;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 90'%3E%3Cpath fill='%236fe3ff' fill-opacity='.65' d='M8 45Q52 2 112 45Q52 88 8 45ZM110 45l58-34v68Z'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 100'%3E%3Cpath fill='%23a8c8d8' fill-opacity='.58' d='M8 57Q42 20 82 32Q115 5 150 35Q180 25 205 52L232 35 224 65 204 58Q165 86 124 63Q68 82 8 57Z'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 150 100'%3E%3Cpath fill='%23c5a8ff' fill-opacity='.6' d='M18 52Q42 22 78 35L111 18 103 43Q133 48 138 67L113 63Q93 88 61 70L34 82 40 63Z'/%3E%3C/svg%3E");
+  background-size: 180px 90px, 240px 100px, 150px 100px;
+  background-position: -200px 26%, calc(100% + 250px) 55%, -170px 75%;
+  animation: aquarium-swim 34s linear infinite;
+}
+@keyframes aquarium-swim {
+  from { background-position: -200px 26%, calc(100% + 250px) 55%, -170px 75%; }
+  to { background-position: calc(100% + 200px) 26%, -250px 55%, calc(100% + 170px) 75%; }
+}
+/* Para nasa ibabaw ng aquarium ang lahat ng laman */
 header, #layout { position: relative; z-index: 1; }
 
 /* ===== HEADER ===== */
@@ -180,6 +194,8 @@ html, body, * { scrollbar-width: none; -ms-overflow-style: none; }   /* Firefox 
   background: linear-gradient(155deg, rgba(88, 98, 132, .92), rgba(94, 78, 126, .92));
   box-shadow: var(--glass-shadow);
 }
+
+@media (prefers-reduced-motion: reduce) { body::after { animation: none; } }
 
 /* ===== DELETE PANEL ===== */
 .pill.red { background: linear-gradient(90deg, #b8322b, #e0615a); box-shadow: none; }
