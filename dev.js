@@ -19,10 +19,10 @@ function buildForm() {
 /* ===== MAGANDANG KEY PICKER (kapalit ng karaniwang dropdown ng browser) ===== */
 function syncKey() {
   const v = $("fKey").value;
-  const minor = /m$/.test(v);
+  const activeMode = v ? (/m$/.test(v) ? "minor" : "major") : ($("keyPickPanel").dataset.mode || "major");
   $("keyPickBtn").textContent = v ? "Key: " + v : "Key:";
   document.querySelectorAll("#keyPickPanel .key-note").forEach((b) => b.classList.toggle("sel", v !== "" && b.dataset.k === v));
-  document.querySelectorAll("#keyPickPanel .key-mode").forEach((b) => b.classList.toggle("sel", b.dataset.mode === (minor ? "minor" : "major")));
+  document.querySelectorAll("#keyPickPanel .key-mode").forEach((b) => b.classList.toggle("sel", b.dataset.mode === activeMode));
 }
 function renderKeyNotes(mode) {
   const suffix = mode === "minor" ? "m" : "";
@@ -45,7 +45,14 @@ function buildKeyPicker() {
   $("keyPickBtn").onclick = (e) => { e.stopPropagation(); wrap.classList.toggle("open"); };
   $("keyPickPanel").onclick = (e) => {
     const mode = e.target.closest(".key-mode");
-    if (mode) { renderKeyNotes(mode.dataset.mode); syncKey(); return; }
+    if (mode) {
+      const currentRoot = ($("fKey").value || "A").replace(/m$/, "");
+      renderKeyNotes(mode.dataset.mode);
+      // Keep the current root and apply the newly chosen mode immediately.
+      sel.value = currentRoot + (mode.dataset.mode === "minor" ? "m" : "");
+      syncKey();
+      return;
+    }
     const b = e.target.closest("button"); if (!b) return;
     sel.value = b.dataset.k; syncKey(); wrap.classList.remove("open");
   };
