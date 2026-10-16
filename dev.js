@@ -19,18 +19,32 @@ function buildForm() {
 /* ===== MAGANDANG KEY PICKER (kapalit ng karaniwang dropdown ng browser) ===== */
 function syncKey() {
   const v = $("fKey").value;
+  const minor = /m$/.test(v);
   $("keyPickBtn").textContent = v ? "Key: " + v : "Key:";
-  document.querySelectorAll("#keyPickPanel button").forEach((b) => b.classList.toggle("sel", v !== "" && b.dataset.k === v));
+  document.querySelectorAll("#keyPickPanel .key-note").forEach((b) => b.classList.toggle("sel", v !== "" && b.dataset.k === v));
+  document.querySelectorAll("#keyPickPanel .key-mode").forEach((b) => b.classList.toggle("sel", b.dataset.mode === (minor ? "minor" : "major")));
+}
+function renderKeyNotes(mode) {
+  const suffix = mode === "minor" ? "m" : "";
+  $("keyPickPanel").dataset.mode = mode;
+  $("keyPickPanel").querySelectorAll(".key-note").forEach((b) => b.remove());
+  NOTES.forEach((n) => {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "key-note"; b.dataset.k = n + suffix; b.textContent = n + suffix;
+    $("keyPickPanel").appendChild(b);
+  });
 }
 function buildKeyPicker() {
   const sel = $("fKey"), wrap = document.createElement("div");
   sel.style.display = "none";                              // nandoon pa rin siya (taguan ng value), pero hindi na kita
   wrap.id = "keyPick";
-  wrap.innerHTML = '<button type="button" id="keyPickBtn"></button><div id="keyPickPanel"></div>';
+  wrap.innerHTML = '<button type="button" id="keyPickBtn"></button><div id="keyPickPanel"><div class="key-mode-tabs"><button type="button" class="key-mode" data-mode="major">Major</button><button type="button" class="key-mode" data-mode="minor">Minor</button></div></div>';
   sel.after(wrap);
-  $("keyPickPanel").innerHTML = NOTES.map((n) => `<button type="button" data-k="${n}">${n}</button>`).join("");
+  renderKeyNotes("major");
   $("keyPickBtn").onclick = (e) => { e.stopPropagation(); wrap.classList.toggle("open"); };
   $("keyPickPanel").onclick = (e) => {
+    const mode = e.target.closest(".key-mode");
+    if (mode) { renderKeyNotes(mode.dataset.mode); syncKey(); return; }
     const b = e.target.closest("button"); if (!b) return;
     sel.value = b.dataset.k; syncKey(); wrap.classList.remove("open");
   };

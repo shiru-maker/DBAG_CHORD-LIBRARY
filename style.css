@@ -303,6 +303,9 @@ html, body, * { scrollbar-width: none; -ms-overflow-style: none; }   /* Firefox 
   border: var(--glass-border); box-shadow: var(--glass-shadow), 0 0 30px rgba(91, 191, 224, .18);
   backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
 }
+#keyPickPanel .key-mode-tabs { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+#keyPickPanel .key-mode { padding: 8px 0; border: var(--glass-border); border-radius: 14px; cursor: pointer; background: rgba(130, 150, 255, .12); color: #d7e7ff; font: 700 1rem "Cormorant Garamond", Georgia, serif; }
+#keyPickPanel .key-mode.sel { background: var(--accent); color: #fff; border-color: transparent; }
 #keyPick.open #keyPickPanel { display: grid; animation: keyPop .18s ease-out; }
 @keyframes keyPop { from { opacity: 0; transform: translateY(-6px) scale(.97); } to { opacity: 1; transform: none; } }
 #keyPickPanel button {
