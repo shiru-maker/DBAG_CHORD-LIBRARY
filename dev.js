@@ -14,7 +14,11 @@ let songs = [], editingId = null;
 function buildForm() {
   $("fKey").innerHTML = '<option value="">Key:</option>' + NOTES.flatMap((n) => [`<option value="${n}">${n}</option>`, `<option value="${n}m">${n}m</option>`]).join("");
   const singerFields = (keys) => keys.map((n) => `<label><b>${n}</b><input data-key="${n}" placeholder="Singer"></label>`).join("");
-  $("keyList").innerHTML = `${singerFields(NOTES)}<h3 class="singer-heading">Minor Keys</h3>${singerFields(NOTES.map((n) => n + "m"))}`;
+  $("keyList").innerHTML = `<button type="button" class="singer-toggle" aria-expanded="false">Singer Names <span aria-hidden="true">&#9662;</span></button><div class="singer-content">${singerFields(NOTES)}<h3 class="singer-heading">Minor Keys</h3>${singerFields(NOTES.map((n) => n + "m"))}</div>`;
+  $("keyList").querySelector(".singer-toggle").onclick = () => {
+    const open = $("keyList").classList.toggle("open");
+    $("keyList").querySelector(".singer-toggle").setAttribute("aria-expanded", String(open));
+  };
   buildKeyPicker();
 }
 /* ===== MAGANDANG KEY PICKER (kapalit ng karaniwang dropdown ng browser) ===== */

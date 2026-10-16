@@ -172,10 +172,14 @@ body.sub .church { display: none; }          /* gear at church name: main page l
 #dev option { color: #111; }
 #dev .row { display: flex; gap: 14px; margin-bottom: 14px; }
 #dev .row input { flex: 1; min-width: 0; }
-#dev .row.top { align-items: flex-start; }
+#dev .row.top { align-items: stretch; }
 #fChords { flex: 1; min-height: 52vh; resize: vertical; font: 1.05rem/1.5 "Courier New", monospace; white-space: pre; border-radius: 26px; }
-#keyList { width: 250px; flex: 0 0 250px; padding: 10px; border-radius: 22px; background: var(--glass); border: var(--glass-border); overflow: visible; }
-#keyList::-webkit-scrollbar { display: none; }
+#keyList { width: 250px; flex: 0 0 250px; min-width: 0; align-self: flex-start; border-radius: 18px; background: var(--glass); border: var(--glass-border); overflow: hidden; }
+#keyList .singer-toggle { display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 13px 16px; color: var(--text); font: 700 1.1rem "Cormorant Garamond", Georgia, serif; text-align: left; cursor: pointer; background: rgba(20, 25, 90, .55); border: 0; }
+#keyList.open .singer-toggle span { transform: rotate(180deg); }
+#keyList .singer-toggle span { color: var(--chord); transition: transform .18s; }
+#keyList .singer-content { display: none; max-height: 52vh; padding: 10px; overflow-y: auto; }
+#keyList.open .singer-content { display: block; }
 #keyList label { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
 #keyList .singer-heading { margin: 14px 0 10px; padding: 8px; border-radius: 12px; background: rgba(27, 34, 95, .82); color: var(--chord); font: 700 1rem "Cormorant Garamond", Georgia, serif; text-align: center; }
 #keyList b { width: 30px; text-align: center; color: var(--chord); }
@@ -188,7 +192,8 @@ body.sub .church { display: none; }          /* gear at church name: main page l
   #headBack { left: 14px; }
   #dev { padding: 8px 12px 20px; }
   #dev .row, #dev .row.top { flex-direction: column; }
-  #keyList { width: 100%; flex-basis: auto; overflow: visible; }
+  #keyList { width: 100%; flex-basis: auto; }
+  #keyList .singer-content { max-height: 34vh; }
   #fChords { min-height: 40vh; }
 }
 
