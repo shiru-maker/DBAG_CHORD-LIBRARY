@@ -148,11 +148,23 @@ if ($("panel")) {
 window.addEventListener("resize", () => { if (current && $("chords")) fitChords(); });
 
 // Gumawa ng isang row ng listahan: title (pindutin = buksan) + button sa kanan
+function fitSongTitle(title) {
+  title.style.fontSize = "";
+  const minSize = 11;
+  let size = parseFloat(getComputedStyle(title).fontSize) || 20;
+  while (title.scrollWidth > title.clientWidth + 1 && size > minSize) {
+    size = Math.max(minSize, size - 0.5);
+    title.style.fontSize = size + "px";
+  }
+}
+window.addEventListener("resize", () => document.querySelectorAll(".song-title").forEach(fitSongTitle));
 function songRow(s, btnClass, btnText, onBtn) {
   const li = document.createElement("li"), t = document.createElement("button"), b = document.createElement("button");
   t.className = "song-title"; t.textContent = s.title; t.onclick = () => openSong(s);
   b.className = btnClass; b.textContent = btnText; b.onclick = onBtn;
-  li.append(t, b); return li;
+  li.append(t, b);
+  requestAnimationFrame(() => fitSongTitle(t));
+  return li;
 }
 
 /* ===== PASSWORD NG DEVELOPER PAGE ===== */

@@ -107,8 +107,8 @@ header { text-align: center; padding: 16px 70px 8px; }
 #songList { list-style: none; margin: 0; padding: 0 6px; max-height: 50vh; overflow-y: auto; }
 #songList li { display: flex; align-items: center; padding: 0 8px 0 14px; height: 50px; background: var(--row-a); }
 #songList li:nth-child(even) { background: var(--row-b); }
-.song-title { flex: 1; background: none; border: none; color: var(--text); font: 500 1.25rem "Cormorant Garamond", Georgia, serif; text-align: center; cursor: pointer; }
-.add-btn { width: 30px; height: 30px; border: none; border-radius: 50%; background: #3fae6a; color: #fff; font-size: 1.2rem; cursor: pointer; }
+.song-title { flex: 1; min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; background: none; border: none; color: var(--text); font: 500 1.25rem "Cormorant Garamond", Georgia, serif; text-align: center; cursor: pointer; }
+.add-btn, .minus-btn { flex: 0 0 30px; }
 .pill {
   display: block; margin: 18px auto 0; padding: 12px 44px; border: none; border-radius: 30px;
   background: var(--accent); color: #fff; font: italic 700 1.3rem "Cormorant Garamond", Georgia, serif;
@@ -342,3 +342,14 @@ body.page-dev #logoutBtn:hover { color: #fff; background: rgba(217, 69, 59, .55)
 @media (max-width: 800px) {
   body.page-dev #logoutBtn { top: 16px; right: 10px; font-size: .85rem; padding: 4px 8px; }
 }
+
+/* Shared glass action buttons in the song lists. */
+.add-btn, .minus-btn {
+  display: grid; place-items: center; width: 26px; height: 26px; flex: 0 0 26px;
+  padding: 0; border: 1px solid rgba(170, 195, 255, .28); border-radius: 8px;
+  background: rgba(20, 25, 90, .56); color: var(--chord);
+  font: 700 1.1rem/1 "Cormorant Garamond", Georgia, serif; cursor: pointer;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .12); transition: background .16s, border-color .16s, transform .16s;
+}
+.add-btn:hover, .minus-btn:hover { background: var(--accent); border-color: transparent; color: #fff; }
+.add-btn:active, .minus-btn:active { transform: scale(.92); }
