@@ -157,7 +157,9 @@ function fitSongTitle(title) {
     title.style.fontSize = size + "px";
   }
 }
-window.addEventListener("resize", () => document.querySelectorAll(".song-title").forEach(fitSongTitle));
+function fitSongTitles() { document.querySelectorAll(".song-title").forEach(fitSongTitle); }
+window.addEventListener("resize", fitSongTitles);
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitSongTitles);
 function songRow(s, btnClass, btnText, onBtn) {
   const li = document.createElement("li"), t = document.createElement("button"), b = document.createElement("button");
   t.className = "song-title"; t.textContent = s.title; t.onclick = () => openSong(s);
