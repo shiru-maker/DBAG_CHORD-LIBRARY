@@ -120,6 +120,7 @@ header { text-align: center; padding: 16px 70px 8px; }
   body.show-song #panel { display: flex; padding: 18px; height: calc(100vh - 110px); }
   #backBtn { display: none; }                         /* tinanggal na ang back arrow sa phone */
   body::before { width: 260px; }                     /* mas maliit ang circuit sa phone */
+  body::before { display: none; }                     /* alisin ang circuit background sa phone */
 
   /* Sunday Line-up: phone lang, piliin ang kanta para dumiretso sa chords. */
   body.page-lineup.lineup-song #sidebar { display: none; }
