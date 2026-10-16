@@ -51,7 +51,25 @@ function buildKeyPicker() {
   wrap.innerHTML = '<button type="button" id="keyPickBtn"></button><div id="keyPickPanel"><div class="key-notes"></div><div class="key-mode-tabs"><button type="button" class="key-mode" data-mode="major">Major</button><button type="button" class="key-mode" data-mode="minor">Minor</button></div></div>';
   sel.after(wrap);
   renderKeyNotes("major");
-  $("keyPickBtn").onclick = (e) => { e.stopPropagation(); wrap.classList.toggle("open"); };
+  const placePanel = () => {
+    if (!wrap.classList.contains("open")) return;
+    const anchor = $("keyPickBtn").getBoundingClientRect(), panel = $("keyPickPanel");
+    const gap = 8, edge = 12;
+    const left = Math.max(edge, Math.min(anchor.left, window.innerWidth - panel.offsetWidth - edge));
+    const below = anchor.bottom + gap;
+    const top = below + panel.offsetHeight <= window.innerHeight - edge
+      ? below
+      : Math.max(edge, anchor.top - panel.offsetHeight - gap);
+    panel.style.left = left + "px";
+    panel.style.top = top + "px";
+  };
+  $("keyPickBtn").onclick = (e) => {
+    e.stopPropagation();
+    const open = wrap.classList.toggle("open");
+    if (open) requestAnimationFrame(placePanel);
+  };
+  window.addEventListener("resize", placePanel);
+  document.addEventListener("scroll", placePanel, true);
   $("keyPickPanel").onclick = (e) => {
     const mode = e.target.closest(".key-mode");
     if (mode) {
