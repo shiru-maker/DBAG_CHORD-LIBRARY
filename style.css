@@ -33,19 +33,19 @@ body::before {
   content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
 }
 body::after {
-  content: ""; position: fixed; inset: 0; z-index: 2; pointer-events: none;
-  opacity: .58; filter: blur(1px);
-  background-repeat: no-repeat;
+  content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  opacity: .46; filter: blur(1.5px);
+  background-repeat: repeat;
   background-image:
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 140 70'%3E%3Cpath fill='%236fe3ff' fill-opacity='.62' d='M8 35C32 5 76 7 104 35 76 63 32 65 8 35Zm96 0 30-25v50Z'/%3E%3C/svg%3E"),
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 110 55'%3E%3Cpath fill='%23c5a8ff' fill-opacity='.58' d='M7 28C27 5 61 6 82 28 61 49 27 50 7 28Zm75 0 24-20v40Z'/%3E%3C/svg%3E");
   background-size: 140px 70px, 110px 55px;
-  background-position: -160px 32%, calc(100% + 130px) 68%;
+  background-position: 0 10%, 50px 45%;
   animation: fish-swim 20s linear infinite;
 }
 @keyframes fish-swim {
-  from { background-position: -160px 32%, calc(100% + 130px) 68%; }
-  to { background-position: calc(100% + 160px) 32%, -140px 68%; }
+  from { background-position: 0 10%, 50px 45%; }
+  to { background-position: 280px 10%, -170px 45%; }
 }
 /* Para nasa ibabaw ng background animation ang lahat ng laman */
 header, #layout { position: relative; z-index: 1; }
