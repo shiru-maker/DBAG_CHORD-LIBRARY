@@ -14,12 +14,12 @@ let songs = [], editingId = null;
 function buildForm() {
   $("fKey").innerHTML = '<option value="">Key:</option>' + NOTES.flatMap((n) => [`<option value="${n}">${n}</option>`, `<option value="${n}m">${n}m</option>`]).join("");
   const singerFields = (keys) => keys.map((n) => `<label><b>${n}</b><input data-key="${n}" placeholder="Singer"></label>`).join("");
-  $("keyList").innerHTML = `<button type="button" class="singer-heading" aria-expanded="false" data-mode="major">Major Keys <span aria-hidden="true">&#9662;</span></button><div class="singer-fields" data-mode="major" hidden>${singerFields(NOTES)}</div><button type="button" class="singer-heading" aria-expanded="false" data-mode="minor">Minor Keys <span aria-hidden="true">&#9662;</span></button><div class="singer-fields" data-mode="minor" hidden>${singerFields(NOTES.map((n) => n + "m"))}</div>`;
+  $("keyList").innerHTML = `<div class="singer-group"><button type="button" class="singer-heading" aria-expanded="false" data-mode="major">Major Keys <span aria-hidden="true">&#9662;</span></button><div class="singer-fields" data-mode="major" hidden>${singerFields(NOTES)}</div></div><div class="singer-group"><button type="button" class="singer-heading" aria-expanded="false" data-mode="minor">Minor Keys <span aria-hidden="true">&#9662;</span></button><div class="singer-fields" data-mode="minor" hidden>${singerFields(NOTES.map((n) => n + "m"))}</div></div>`;
   $("keyList").querySelectorAll(".singer-heading").forEach((toggle) => {
     toggle.onclick = () => {
       const open = toggle.getAttribute("aria-expanded") !== "true";
       toggle.setAttribute("aria-expanded", String(open));
-      $("keyList").querySelector(`.singer-fields[data-mode="${toggle.dataset.mode}"]`).hidden = !open;
+      toggle.parentElement.querySelector(".singer-fields").hidden = !open;
       toggle.classList.toggle("open", open);
     };
   });
@@ -55,7 +55,8 @@ function buildKeyPicker() {
     if (!wrap.classList.contains("open")) return;
     const anchor = $("keyPickBtn").getBoundingClientRect(), panel = $("keyPickPanel");
     const gap = 8, edge = 12;
-    const left = Math.max(edge, Math.min(anchor.left, window.innerWidth - panel.offsetWidth - edge));
+    const centeredLeft = anchor.left + (anchor.width - panel.offsetWidth) / 2;
+    const left = Math.max(edge, Math.min(centeredLeft, window.innerWidth - panel.offsetWidth - edge));
     const below = anchor.bottom + gap;
     const top = below + panel.offsetHeight <= window.innerHeight - edge
       ? below
