@@ -297,16 +297,18 @@ html, body, * { scrollbar-width: none; -ms-overflow-style: none; }   /* Firefox 
 #keyPickBtn::after { content: "\25BE"; display: inline-block; color: var(--chord); transition: transform .2s; }
 #keyPick.open #keyPickBtn::after { transform: rotate(180deg); }
 #keyPickPanel {
-  display: none; position: absolute; top: calc(100% + 8px); left: 0; z-index: 8; width: 100%; min-width: 230px; padding: 12px;
-  grid-template-columns: repeat(4, 1fr); gap: 8px; border-radius: 24px;
+  display: none; position: absolute; top: calc(100% + 8px); left: 0; z-index: 8; width: 100%; min-width: 300px; padding: 12px;
+  border-radius: 24px;
   background: linear-gradient(145deg, rgba(60, 70, 170, .92), rgba(30, 35, 100, .95));
   border: var(--glass-border); box-shadow: var(--glass-shadow), 0 0 30px rgba(91, 191, 224, .18);
   backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
 }
-#keyPickPanel .key-mode-tabs { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; justify-self: stretch; margin-top: 2px; }
+#keyPickPanel .key-notes { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+#keyPickPanel .key-mode-tabs { display: flex; justify-content: center; gap: 8px; margin: 10px auto 0; width: min(100%, 220px); }
+#keyPickPanel .key-mode-tabs button { flex: 1; }
 #keyPickPanel .key-mode { padding: 8px 0; border: var(--glass-border); border-radius: 14px; cursor: pointer; background: rgba(130, 150, 255, .12); color: #d7e7ff; font: 700 1rem "Cormorant Garamond", Georgia, serif; }
 #keyPickPanel .key-mode.sel { background: var(--accent); color: #fff; border-color: transparent; }
-#keyPick.open #keyPickPanel { display: grid; animation: keyPop .18s ease-out; }
+#keyPick.open #keyPickPanel { display: block; animation: keyPop .18s ease-out; }
 @keyframes keyPop { from { opacity: 0; transform: translateY(-6px) scale(.97); } to { opacity: 1; transform: none; } }
 #keyPickPanel button {
   padding: 10px 0; border: var(--glass-border); border-radius: 14px; cursor: pointer;
@@ -314,7 +316,7 @@ html, body, * { scrollbar-width: none; -ms-overflow-style: none; }   /* Firefox 
 }
 #keyPickPanel button:active { transform: scale(.95); }
 #keyPickPanel button.sel { background: var(--accent); color: #fff; border-color: transparent; box-shadow: 0 4px 14px rgba(91, 191, 224, .35); }
-@media (max-width: 800px) { #keyPick { min-width: 0; } #keyPickPanel { min-width: 0; } }
+@media (max-width: 800px) { #keyPick { min-width: 0; } #keyPickPanel { min-width: min(300px, calc(100vw - 32px)); } }
 
 /* ===== LOGOUT BUTTON (Developer Page lang): kanan sa taas, laptop at phone ===== */
 #logoutBtn { display: none; }
