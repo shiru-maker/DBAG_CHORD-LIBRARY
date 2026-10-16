@@ -13,7 +13,8 @@ let songs = [], editingId = null;
 
 function buildForm() {
   $("fKey").innerHTML = '<option value="">Key:</option>' + NOTES.flatMap((n) => [`<option value="${n}">${n}</option>`, `<option value="${n}m">${n}m</option>`]).join("");
-  $("keyList").innerHTML = NOTES.map((n) => `<label><b>${n}</b><input data-key="${n}" placeholder="Singer"></label>`).join(""); // singer kada key
+  const keys = NOTES.flatMap((n) => [n, n + "m"]);
+  $("keyList").innerHTML = keys.map((n) => `<label><b>${n}</b><input data-key="${n}" placeholder="Singer"></label>`).join(""); // singer kada major/minor key
   buildKeyPicker();
 }
 /* ===== MAGANDANG KEY PICKER (kapalit ng karaniwang dropdown ng browser) ===== */
