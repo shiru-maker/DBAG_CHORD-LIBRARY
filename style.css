@@ -50,8 +50,12 @@ body::after {
 @media (max-width: 800px) {
   body { background-attachment: fixed; }
   body::before, body::after { position: fixed; inset: 0; }
-  body::before { background-size: 100% 42%; }
-  body::after { background-size: 180px 90px, 240px 100px, 150px 100px; }
+  body::before { opacity: .32; background-size: 100% 42%; }
+  body::after {
+    opacity: .34;
+    background-size: 180px 90px, 240px 100px, 150px 100px;
+    animation-duration: 34s;
+  }
 }
 @keyframes aquarium-swim {
   from { background-position: -200px 26%, calc(100% + 250px) 55%, -170px 75%; }
