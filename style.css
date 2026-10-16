@@ -107,7 +107,7 @@ header { text-align: center; padding: 16px 70px 8px; }
 #songList { list-style: none; margin: 0; padding: 0 6px; max-height: 50vh; overflow-y: auto; }
 #songList li { display: flex; align-items: center; padding: 0 8px 0 14px; height: 50px; background: var(--row-a); }
 #songList li:nth-child(even) { background: var(--row-b); }
-.song-title { flex: 1; min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; background: none; border: none; color: var(--text); font: 500 1.25rem "Cormorant Garamond", Georgia, serif; text-align: center; cursor: pointer; }
+.song-title { flex: 1; min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; background: none; border: none; color: var(--text); font: 500 clamp(.8rem, 4vw, 1.1rem)/1 "Cormorant Garamond", Georgia, serif; text-align: center; cursor: pointer; }
 .add-btn, .minus-btn { flex: 0 0 30px; }
 .pill {
   display: block; margin: 18px auto 0; padding: 12px 44px; border: none; border-radius: 30px;
