@@ -33,6 +33,7 @@ function renderKeyNotes(mode) {
     b.type = "button"; b.className = "key-note"; b.dataset.k = n + suffix; b.textContent = n + suffix;
     $("keyPickPanel").appendChild(b);
   });
+  $("keyPickPanel").appendChild($("keyPickPanel").querySelector(".key-mode-tabs"));
 }
 function buildKeyPicker() {
   const sel = $("fKey"), wrap = document.createElement("div");
