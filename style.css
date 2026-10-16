@@ -173,11 +173,10 @@ a#headBack { color: #9fe3ff; line-height: 1; }
 html, body, * { scrollbar-width: none; -ms-overflow-style: none; }   /* Firefox at lumang Edge */
 *::-webkit-scrollbar { display: none; width: 0; height: 0; }        /* Chrome, Edge, Safari, phone */
 
-/* ===== CHORDS/LYRICS BOX: mala-salamin na gray-purple na box na may circuit sa kanang baba ===== */
+/* ===== CHORDS/LYRICS BOX ===== */
 #chords {
   padding: 22px 24px; border-radius: 30px; border: var(--glass-border);
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='700' viewBox='0 0 420 700' fill='none' stroke='%234fc3e8' stroke-width='3' stroke-opacity='.5'%3E%3Cpath d='M420 40H300l-40 40v120l-50 50'/%3E%3Cpath d='M420 260H340l-30 30v90'/%3E%3Cpath d='M420 520H330l-60 60v80H200'/%3E%3Cpath d='M420 620H380'/%3E%3Cg fill='%234fc3e8' fill-opacity='.7' stroke='none'%3E%3Ccircle cx='210' cy='250' r='9'/%3E%3Ccircle cx='310' cy='380' r='8'/%3E%3Ccircle cx='200' cy='660' r='10'/%3E%3Ccircle cx='260' cy='80' r='6'/%3E%3C/g%3E%3C/svg%3E") no-repeat right bottom / auto 75%,        /* circuit design */
-              linear-gradient(155deg, rgba(88, 98, 132, .92), rgba(94, 78, 126, .92));   /* kulay ng box */
+  background: linear-gradient(155deg, rgba(88, 98, 132, .92), rgba(94, 78, 126, .92));
   box-shadow: var(--glass-shadow);
 }
 
