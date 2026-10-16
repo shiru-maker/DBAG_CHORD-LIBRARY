@@ -19,7 +19,7 @@ function buildForm() {
 /* ===== MAGANDANG KEY PICKER (kapalit ng karaniwang dropdown ng browser) ===== */
 function syncKey() {
   const v = $("fKey").value;
-  const activeMode = v ? (/m$/.test(v) ? "minor" : "major") : ($("keyPickPanel").dataset.mode || "major");
+  const activeMode = $("keyPickPanel").dataset.mode || "major";
   $("keyPickBtn").textContent = v ? "Key: " + v : "Key:";
   document.querySelectorAll("#keyPickPanel .key-note").forEach((b) => b.classList.toggle("sel", v !== "" && b.dataset.k === v));
   document.querySelectorAll("#keyPickPanel .key-mode").forEach((b) => b.classList.toggle("sel", b.dataset.mode === activeMode));
@@ -46,10 +46,9 @@ function buildKeyPicker() {
   $("keyPickPanel").onclick = (e) => {
     const mode = e.target.closest(".key-mode");
     if (mode) {
-      const currentRoot = ($("fKey").value || "A").replace(/m$/, "");
+      e.preventDefault();
+      e.stopPropagation();
       renderKeyNotes(mode.dataset.mode);
-      // Keep the current root and apply the newly chosen mode immediately.
-      sel.value = currentRoot + (mode.dataset.mode === "minor" ? "m" : "");
       syncKey();
       return;
     }
@@ -63,6 +62,7 @@ function fillForm(s) {                    // s = kantang ie-edit, o {} para sa b
   editingId = s.id || null;
   $("fTitle").value = s.title || ""; $("fBy").value = s.artist || ""; $("fBpm").value = s.bpm || "";
   $("fKey").value = s.song_key || ""; $("fChords").value = s.chords || "";
+  renderKeyNotes(/m$/.test($("fKey").value) ? "minor" : "major");
   document.querySelectorAll("#keyList input").forEach((i) => (i.value = (s.singers || {})[i.dataset.key] || ""));
   syncKey();
 }
