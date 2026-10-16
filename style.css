@@ -177,6 +177,7 @@ body.sub .church { display: none; }          /* gear at church name: main page l
 #keyList { width: 250px; padding: 10px; border-radius: 22px; background: var(--glass); border: var(--glass-border); max-height: 52vh; overflow: auto; scrollbar-width: none; }
 #keyList::-webkit-scrollbar { display: none; }
 #keyList label { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+#keyList .singer-heading { margin: 14px 0 10px; padding: 8px; border-radius: 12px; background: rgba(27, 34, 95, .82); color: var(--chord); font: 700 1rem "Cormorant Garamond", Georgia, serif; text-align: center; }
 #keyList b { width: 30px; text-align: center; color: var(--chord); }
 #keyList input { flex: 1; min-width: 0; padding: 6px 12px; font-size: 1rem; border-radius: 12px; }
 .actions { display: flex; justify-content: flex-end; gap: 14px; margin-top: 14px; }
