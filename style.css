@@ -45,6 +45,14 @@ body::after {
   background-position: -200px 26%, calc(100% + 250px) 55%, -170px 75%;
   animation: aquarium-swim 34s linear infinite;
 }
+
+/* Panatilihin ang parehong aquarium background sizing at galaw sa phone. */
+@media (max-width: 800px) {
+  body { background-attachment: fixed; }
+  body::before, body::after { position: fixed; inset: 0; }
+  body::before { background-size: 100% 42%; }
+  body::after { background-size: 180px 90px, 240px 100px, 150px 100px; }
+}
 @keyframes aquarium-swim {
   from { background-position: -200px 26%, calc(100% + 250px) 55%, -170px 75%; }
   to { background-position: calc(100% + 200px) 26%, -250px 55%, calc(100% + 170px) 75%; }
