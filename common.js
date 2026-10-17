@@ -57,9 +57,11 @@ async function guard(fn) {
 
 // ----- Panel ng kanta (title, key, bpm, transpose, chords) -----
 let current = null, transpose = 0;
+const songTransposes = new Map();
 const MAX_TR = 6;   // LIMIT ng transpose: -6 hanggang +6 (palitan ang numero kung gusto mo)
 function openSong(s) {
-  current = s; transpose = 0;
+  if (current) songTransposes.set(current.id, transpose);
+  current = s; transpose = songTransposes.get(s.id) || 0;
   // Phone: ang Back button/gesture ng phone ang pambalik sa listahan (walang nakikitang arrow)
   if (PHONE.matches && !document.body.classList.contains("show-song")) { try { history.pushState({ song: 1 }, ""); } catch (e) {} }
   document.body.classList.add("show-song"); showSong();
@@ -105,8 +107,8 @@ function showSong() {
   fitChords();
 }
 if ($("trPlus")) {   // wala ang panel sa Developer Page
-  $("trPlus").onclick = () => { if (current && transpose < MAX_TR) { transpose++; showSong(); } };
-  $("trMinus").onclick = () => { if (current && transpose > -MAX_TR) { transpose--; showSong(); } };
+  $("trPlus").onclick = () => { if (current && transpose < MAX_TR) { transpose++; songTransposes.set(current.id, transpose); showSong(); } };
+  $("trMinus").onclick = () => { if (current && transpose > -MAX_TR) { transpose--; songTransposes.set(current.id, transpose); showSong(); } };
   $("backBtn").onclick = () => document.body.classList.remove("show-song");   // phone: balik sa listahan
 }
 // ----- SWIPE (PHONE LANG): ang BUONG set (title, key, bpm, transpose, chords) ang gumagalaw -----

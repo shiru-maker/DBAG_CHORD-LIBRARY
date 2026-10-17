@@ -69,7 +69,7 @@ header { text-align: center; padding: 16px 70px 8px; }
 .glitch {
   margin: 0; font-size: clamp(1.6rem, 5vw, 3.2rem); letter-spacing: 2px;
   /* Glitch effect: dalawang kulay na anino sa magkabilang gilid */
-  text-shadow: 3px 0 #2fd0e0, -3px 0 #8a4fe0;
+  text-shadow: 0 0 8px rgba(111, 227, 255, .45);
 }
 .church { margin: 4px 0 0; font-style: italic; font-size: 1.2rem; color: #a58cff; }
 .icon-btn { background: none; border: none; color: #cfd3e6; font-size: 2rem; cursor: pointer; }
@@ -151,6 +151,11 @@ header { text-align: center; padding: 16px 70px 8px; }
   body.page-lineup #songList { padding: 0; max-height: calc(100vh - 170px); }
   body.page-lineup.lineup-song #sidebar { display: none; }
   body.page-lineup.lineup-song #panel { display: flex; padding: 18px; height: calc(100vh - 90px); }
+  body.page-lineup.lineup-song #songTitle { font-size: 1.6rem; margin-bottom: 4px; }
+  body.page-lineup.lineup-song #chords {
+    width: calc(100% + 20px); margin-left: -10px; padding: 18px 12px;
+    font-size: 1.15rem; line-height: 1.55;
+  }
   body.page-lineup #backBtn { display: block; align-self: flex-start; margin: -8px 0 4px -8px; }
 }
 
@@ -256,7 +261,7 @@ html, body, * { scrollbar-width: none; -ms-overflow-style: none; }   /* Firefox 
   backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
 }
 .pw-lock { font-size: 2.2rem; line-height: 1; text-shadow: 0 0 18px rgba(111, 227, 255, .7); }
-.pw-card h2 { margin: 10px 0 16px; font-style: italic; font-weight: 500; font-size: 1.8rem; text-shadow: 2px 0 #2fd0e0, -2px 0 #8a4fe0; }
+.pw-card h2 { margin: 10px 0 16px; font-style: italic; font-weight: 500; font-size: 1.8rem; text-shadow: 0 0 8px rgba(111, 227, 255, .45); }
 .pw-card input {
   width: 100%; padding: 13px 20px; border: none; border-radius: 30px; text-align: center; letter-spacing: 3px;
   font: 1.25rem "Cormorant Garamond", Georgia, serif;
@@ -280,7 +285,7 @@ html, body, * { scrollbar-width: none; -ms-overflow-style: none; }   /* Firefox 
 /* ===== SWIPE SA PHONE: buong set ang gumagalaw, kaya walang side-scroll sa chords ===== */
 @media (max-width: 800px) {
   #panel { touch-action: pan-y; }
-  #chords { overflow-x: hidden; touch-action: pan-y; }
+  #chords { overflow-x: hidden; overflow-y: auto; -webkit-overflow-scrolling: touch; touch-action: pan-y; }
 }
 
 .step-btn:disabled { opacity: .35; cursor: not-allowed; }
