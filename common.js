@@ -71,7 +71,7 @@ function openSong(s) {
   if (PHONE.matches && !document.body.classList.contains("show-song")) { try { history.pushState({ song: 1 }, ""); } catch (e) {} }
   document.body.classList.add("show-song"); showSong();
 }
-window.addEventListener("popstate", () => document.body.classList.remove("show-song"));
+window.addEventListener("popstate", () => document.body.classList.remove("show-song", "lineup-song"));
 // Isang line ng chords/lyrics -> HTML. Tinatranspose ang chords kahit kasama ng lyrics.
 // Pwede ring [C] na bracket style: "[C]Amazing [G]grace"
 function renderLine(l, st) {
@@ -98,8 +98,18 @@ const PHONE = window.matchMedia("(max-width: 800px)");
 function fitChords() {
   const c = $("chords"); c.style.fontSize = "";
   if (!PHONE.matches) return;
-  let fs = parseFloat(getComputedStyle(c).fontSize);
-  while (c.scrollWidth > c.clientWidth + 1 && fs > 8) { fs -= 0.5; c.style.fontSize = fs + "px"; }
+  const base = parseFloat(getComputedStyle(c).fontSize);
+  if (c.scrollWidth <= c.clientWidth + 1) return;
+  c.style.fontSize = "8px";
+  if (c.scrollWidth > c.clientWidth + 1) return;
+  let low = 8, high = base;
+  for (let i = 0; i < 7; i++) {
+    const mid = (low + high) / 2;
+    c.style.fontSize = mid + "px";
+    if (c.scrollWidth > c.clientWidth + 1) high = mid;
+    else low = mid;
+  }
+  c.style.fontSize = low + "px";
 }
 function showSong() {
   const s = current, key = shift(s.song_key || "A", transpose), singer = (s.singers || {})[key]; // singer ng bagong key
@@ -131,25 +141,34 @@ function swipeTo(dir) {                                          // dir: +1 susu
 }
 if ($("panel")) {
   const P = $("panel");
-  let x0, y0, t0, ok = false, drag = false;
+  let x0, y0, t0, ok = false, drag = false, dragX = 0;
   P.addEventListener("touchstart", (e) => {
     ok = PHONE.matches && e.touches.length === 1; drag = false;
-    x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; t0 = Date.now();
+    dragX = 0; x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; t0 = Date.now();
   }, { passive: true });
   P.addEventListener("touchmove", (e) => {
     if (!ok) return;
     const dx = e.touches[0].clientX - x0, dy = e.touches[0].clientY - y0;
     if (!drag && Math.abs(dx) > 10 && Math.abs(dx) > Math.abs(dy) * 1.2) drag = true;
-    if (drag) { P.style.transform = "translateX(" + dx * 0.6 + "px)"; P.style.opacity = 1 - Math.min(Math.abs(dx) / 400, 0.5); }   // sumusunod sa daliri
+    if (drag) { dragX = dx; P.style.transform = "translateX(" + dx * 0.6 + "px)"; P.style.opacity = 1 - Math.min(Math.abs(dx) / 400, 0.5); }   // sumusunod sa daliri
   }, { passive: true });
-  P.addEventListener("touchend", (e) => {
-    if (!ok || !drag) return; ok = drag = false;
-    const dx = e.changedTouches[0].clientX - x0, from = dx * 0.6;
+  const resetDrag = () => {
+    const from = dragX * 0.6;
+    ok = drag = false;
+    dragX = 0;
     P.style.transform = ""; P.style.opacity = "";
+    if (from) P.animate([{ transform: "translateX(" + from + "px)" }, { transform: "none" }], { duration: 180, easing: "ease-out" });
+  };
+  P.addEventListener("touchend", (e) => {
+    if (!ok) return;
+    if (!drag) { ok = false; return; }
+    const dx = e.changedTouches[0].clientX - x0, from = dx * 0.6;
+    P.style.transform = ""; P.style.opacity = ""; ok = drag = false; dragX = 0;
     const commit = Math.abs(dx) > 80 || (Math.abs(dx) > 40 && Date.now() - t0 < 250);
     if (commit && swipeTo(dx < 0 ? 1 : -1)) return;
     P.animate([{ transform: "translateX(" + from + "px)" }, { transform: "none" }], { duration: 200, easing: "ease-out" });   // bumalik kung hindi tumuloy
   }, { passive: true });
+  P.addEventListener("touchcancel", () => resetDrag(), { passive: true });
 }
 
 window.addEventListener("resize", () => { if (current && $("chords")) fitChords(); });
@@ -165,6 +184,12 @@ function fitSongTitle(title) {
   }
 }
 function fitSongTitles() { document.querySelectorAll(".song-title").forEach(fitSongTitle); }
+let titleFitScheduled = false;
+function scheduleFitSongTitles() {
+  if (titleFitScheduled) return;
+  titleFitScheduled = true;
+  requestAnimationFrame(() => { titleFitScheduled = false; fitSongTitles(); });
+}
 window.addEventListener("resize", fitSongTitles);
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitSongTitles);
 function songRow(s, btnClass, btnText, onBtn) {
@@ -172,7 +197,7 @@ function songRow(s, btnClass, btnText, onBtn) {
   t.className = "song-title"; t.textContent = s.title; t.onclick = () => openSong(s);
   b.className = btnClass; b.textContent = btnText; b.onclick = onBtn;
   li.append(t, b);
-  requestAnimationFrame(() => fitSongTitle(t));
+  scheduleFitSongTitles();
   return li;
 }
 

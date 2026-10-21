@@ -21,10 +21,34 @@ Promise.all([DB.getSongs(), DB.getLineup()]).then(([s, l]) => {
 
 // Phone lang: buksan agad ang chord view mula sa Sunday Line-up listahan.
 if (document.body.classList.contains("page-lineup")) {
+  const readerButton = $("fullscreenBtn");
+  if (readerButton) {
+    readerButton.onclick = async () => {
+      const active = document.body.classList.contains("reader-fullscreen");
+      if (active) {
+        if (document.fullscreenElement && document.exitFullscreen) await document.exitFullscreen();
+        else document.body.classList.remove("reader-fullscreen");
+        requestAnimationFrame(fitChords);
+        return;
+      }
+      document.body.classList.add("reader-fullscreen");
+      requestAnimationFrame(fitChords);
+      if (document.documentElement.requestFullscreen) {
+        try { await document.documentElement.requestFullscreen(); } catch (_) { /* CSS full-screen reading mode remains available. */ }
+      }
+    };
+    document.addEventListener("fullscreenchange", () => {
+      document.body.classList.toggle("reader-fullscreen", Boolean(document.fullscreenElement));
+      requestAnimationFrame(fitChords);
+    });
+  }
   const openLineupSong = openSong;
   openSong = (song) => {
     openLineupSong(song);
-    if (window.matchMedia("(max-width: 800px)").matches) document.body.classList.add("lineup-song");
+    if (window.matchMedia("(max-width: 800px)").matches) {
+      document.body.classList.add("lineup-song");
+      fitChords();
+    }
   };
   if ($("backBtn")) $("backBtn").onclick = () => {
     document.body.classList.remove("lineup-song", "show-song");
