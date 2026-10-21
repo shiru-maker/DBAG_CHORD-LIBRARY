@@ -95,7 +95,13 @@ function fillForm(s) {                    // s = kantang ie-edit, o {} para sa b
 }
 
 $("fBpm").addEventListener("input", (e) => {
-  e.target.value = e.target.value.replace(/\D/g, "").slice(0, 3);
+  const input = e.target, value = input.value;
+  const clean = value.replace(/\D/g, "").slice(0, 3);
+  if (clean !== value) {
+    const caret = value.slice(0, input.selectionStart).replace(/\D/g, "").slice(0, 3).length;
+    input.value = clean;
+    input.setSelectionRange(caret, caret);
+  }
 });
 
 $("saveBtn").onclick = () => {
@@ -107,15 +113,19 @@ $("saveBtn").onclick = () => {
   document.querySelectorAll("#keyList input").forEach((i) => { if (i.value.trim()) singers[i.dataset.key] = i.value.trim(); });
   const song = { id: editingId || crypto.randomUUID(), title, artist: $("fBy").value.trim(), song_key: $("fKey").value,
                  bpm, chords: $("fChords").value, singers };
+  const saveButton = $("saveBtn");
+  if (saveButton.disabled) return;
+  saveButton.disabled = true;
   DB.saveSong(song).then(() => {
     const i = songs.findIndex((x) => x.id === song.id);
     if (i >= 0) songs[i] = song; else songs.push(song);
     songs.sort((a, b) => a.title.localeCompare(b.title, undefined, { sensitivity: "base", numeric: true }));
     renderDelList();
     fillForm({});                                          // linisin ang form, handa na para sa susunod na kanta
-    const b = $("saveBtn"); b.textContent = "SAVED \u2713";   // maliit na palatandaan sa mismong button
-    setTimeout(() => (b.textContent = "SAVE"), 1500);
-  }).catch((e) => toast("Could not save song: " + (e.message || e)));
+    saveButton.textContent = "SAVED \u2713";   // maliit na palatandaan sa mismong button
+    setTimeout(() => (saveButton.textContent = "SAVE"), 1500);
+  }).catch((e) => toast("Could not save song: " + (e.message || e)))
+    .finally(() => { saveButton.disabled = false; });
 };
 
 /* ===== EDIT PANEL (kanan): pindutin ang title = i-edit sa form, X = burahin ===== */

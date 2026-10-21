@@ -65,7 +65,6 @@ function saveTranspose(songId, steps) {
 }
 const MAX_TR = 6;   // LIMIT ng transpose: -6 hanggang +6 (palitan ang numero kung gusto mo)
 function openSong(s) {
-  if (current) saveTranspose(current.id, transpose);
   current = s; transpose = Number(songTransposes.get(String(s.id)) ?? 0);
   // Phone: ang Back button/gesture ng phone ang pambalik sa listahan (walang nakikitang arrow)
   if (PHONE.matches && !document.body.classList.contains("show-song")) { try { history.pushState({ song: 1 }, ""); } catch (e) {} }

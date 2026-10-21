@@ -27,15 +27,17 @@ if (document.body.classList.contains("page-lineup")) {
       const active = document.body.classList.contains("reader-fullscreen");
       if (active) {
         if (document.fullscreenElement && document.exitFullscreen) await document.exitFullscreen();
-        else document.body.classList.remove("reader-fullscreen");
-        requestAnimationFrame(fitChords);
+        else {
+          document.body.classList.remove("reader-fullscreen");
+          requestAnimationFrame(fitChords);
+        }
         return;
       }
       document.body.classList.add("reader-fullscreen");
-      requestAnimationFrame(fitChords);
       if (document.documentElement.requestFullscreen) {
-        try { await document.documentElement.requestFullscreen(); } catch (_) { /* CSS full-screen reading mode remains available. */ }
-      }
+        try { await document.documentElement.requestFullscreen(); }
+        catch (_) { requestAnimationFrame(fitChords); /* CSS full-screen reading mode remains available. */ }
+      } else requestAnimationFrame(fitChords);
     };
     document.addEventListener("fullscreenchange", () => {
       document.body.classList.toggle("reader-fullscreen", Boolean(document.fullscreenElement));
