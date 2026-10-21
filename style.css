@@ -165,7 +165,7 @@ header { text-align: center; padding: 16px 70px 8px; }
   body.page-lineup.lineup-song #sidebar { display: none; }
   body.page-lineup.lineup-song #panel { display: flex; padding: 18px; height: calc(100vh - 90px); }
   body.page-lineup #panel { position: relative; }
-  body.page-lineup.lineup-song .reader-btn { display: grid; }
+  body.page-lineup.lineup-song #fullscreenBtn { display: grid; }
   body.page-lineup.lineup-song #songTitle { font-size: 1.35rem; margin-bottom: 4px; }
   body.page-lineup.lineup-song #chords {
     width: calc(100% + 20px); margin-left: -10px; padding: 18px 12px;
