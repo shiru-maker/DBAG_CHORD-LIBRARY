@@ -141,6 +141,7 @@ header { text-align: center; padding: 16px 70px 8px; }
 }
 #chords::-webkit-scrollbar { display: none; }   /* Chrome, Edge, Safari, phone */
 .chord { color: var(--chord); font-weight: bold; }   /* chords ay may ibang kulay sa lyrics */
+.repeat-mark { color: #c6a1ff; font-size: .78em; font-style: italic; font-weight: 500; white-space: nowrap; }
 
 /* ===== PHONE (800px pababa): isang view lang kada pagkakataon ===== */
 @media (max-width: 800px) {

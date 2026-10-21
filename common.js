@@ -10,6 +10,7 @@ const shift = (n, st) => NOTES[(((NOTES.indexOf(FLATS[n] || n) + st) % 12) + 12)
 const isChordLine = (l) => l.trim() !== "" && l.trim().split(/\s+/).every((w) => CHORD.test(w)); // lahat chord = chord line
 const transposeLine = (l, st) => l.replace(/\S+/g, (w) => { const m = w.match(CHORD); return shift(m[1], st) + m[2] + (m[3] ? "/" + shift(m[3], st) + m[4] : ""); });
 const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+const escRepeat = (s) => esc(s).replace(/\(\s*\d+\s*[xX]\s*\)/g, (m) => '<span class="repeat-mark">' + m + "</span>");
 
 // Maliit na mensahe sa loob ng page (para sa error lang), kusang nawawala
 function toast(msg) {
@@ -74,13 +75,13 @@ window.addEventListener("popstate", () => document.body.classList.remove("show-s
 // Isang line ng chords/lyrics -> HTML. Tinatranspose ang chords kahit kasama ng lyrics.
 // Pwede ring [C] na bracket style: "[C]Amazing [G]grace"
 function renderLine(l, st) {
-  if (isChordLine(l)) return '<span class="chord">' + esc(transposeLine(l, st)) + "</span>";
+  if (isChordLine(l)) return '<span class="chord">' + escRepeat(transposeLine(l, st)) + "</span>";
   const parts = l.split(/(\s+|\|:?|:\|)/).filter((x) => x !== "");   // hiwalay din ang bar lines (|, |:, :|) para maayos kahit walang space: D|F#m|G|A|
   const sym = (t) => t !== undefined && /\S/.test(t) && !/[A-Za-z0-9]/.test(t);   // simbolo lang (| : |: atbp.), walang letra
   return parts.map((w, i) => {
     if (!w.trim()) return esc(w);
     const br = w.match(/^\[(.+)\]$/), core = br ? br[1] : w, m = core.match(CHORD);
-    if (!m) return esc(w);
+    if (!m) return escRepeat(w);
     // Ang "A" na mag-isa sa gitna ng lyrics ay English "A" (hindi chord), maliban kung may 2+ space sa tabi niya
     // Pero kapag may bar line (| |: :) sa tabi niya, chord siya (halimbawa "G | A |:")
     if (!br && core === "A" && !(sym(parts[i - 2]) || sym(parts[i - 1]) || sym(parts[i + 1]) || sym(parts[i + 2]))) {
