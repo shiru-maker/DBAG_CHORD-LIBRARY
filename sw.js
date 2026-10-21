@@ -1,4 +1,4 @@
-const CACHE_NAME = "chord-library-shell-v6";
+const CACHE_NAME = "chord-library-shell-v7";
 const APP_SHELL = [
   "./",
   "./index.html",

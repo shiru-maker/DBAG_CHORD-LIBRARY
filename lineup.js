@@ -24,6 +24,7 @@ if (document.body.classList.contains("page-lineup")) {
   const readerButton = $("fullscreenBtn");
   if (readerButton) {
     readerButton.onclick = async () => {
+      if (!window.matchMedia("(max-width: 800px)").matches) return;
       const active = document.body.classList.contains("reader-fullscreen");
       if (active) {
         if (document.fullscreenElement && document.exitFullscreen) await document.exitFullscreen();
