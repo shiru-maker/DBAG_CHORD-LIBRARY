@@ -99,7 +99,7 @@ function fitChords() {
   const c = $("chords"); c.style.fontSize = "";
   if (!PHONE.matches) return;
   let fs = parseFloat(getComputedStyle(c).fontSize);
-  while (c.scrollWidth > c.clientWidth + 1 && fs > 10) { fs -= 0.5; c.style.fontSize = fs + "px"; }
+  while (c.scrollWidth > c.clientWidth + 1 && fs > 8) { fs -= 0.5; c.style.fontSize = fs + "px"; }
 }
 function showSong() {
   const s = current, key = shift(s.song_key || "A", transpose), singer = (s.singers || {})[key]; // singer ng bagong key
@@ -177,13 +177,15 @@ function songRow(s, btnClass, btnText, onBtn) {
 }
 
 /* ===== PASSWORD NG DEVELOPER PAGE ===== */
-const DEV_HASH = "79f5935356357fd143c714817ebf68135ff3f1a730c52bc648b3b87d1c5d01ba";   // SHA-256 ng password (hindi nakasulat nang diretso)
+const DEV_HASH = "9d65e801f0b61c897d38b0ae4e2a14f2f91a3c48034a6b9ba81dac197c82731d";   // SHA-256 ng Developer code dbag123
+const DEV_UNLOCK_KEY = "developerUnlocked";
 async function sha256(t) {
   const b = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(t));
   return [...new Uint8Array(b)].map((x) => x.toString(16).padStart(2, "0")).join("");
 }
-// Lalabas ang magandang password box sa loob ng page. LAGING hihingi (walang naaalala).
+// Lalabas ang code box sa bawat pagbukas ng Developer Page.
 function unlock() {
+  if (localStorage.getItem(DEV_UNLOCK_KEY) === "true") return Promise.resolve(true);
   return new Promise((resolve) => {
     const ov = document.createElement("div");
     ov.className = "pw-overlay";
@@ -191,7 +193,7 @@ function unlock() {
       '<form class="pw-card" autocomplete="off">' +
       '<div class="pw-lock">&#128274;</div>' +
       "<h2>Developer Access</h2>" +
-      '<input id="pwInput" type="password" placeholder="Password" autocomplete="off">' +
+      '<input id="pwInput" type="password" placeholder="Developer code" autocomplete="off">' +
       '<div class="pw-err" id="pwErr"></div>' +
       '<div class="pw-actions"><button type="button" class="pill grey" id="pwCancel">CANCEL</button>' +
       '<button type="submit" class="pill">ENTER</button></div></form>';
@@ -202,8 +204,11 @@ function unlock() {
     document.addEventListener("keydown", onKey);
     card.onsubmit = async (e) => {
       e.preventDefault();
-      if ((await sha256(input.value)) === DEV_HASH) return done(true);
-      err.textContent = "Incorrect password.";
+      if ((await sha256(input.value)) === DEV_HASH) {
+        localStorage.setItem(DEV_UNLOCK_KEY, "true");
+        return done(true);
+      }
+      err.textContent = "Incorrect code.";
       input.value = ""; input.focus();
       card.classList.remove("shake"); void card.offsetWidth; card.classList.add("shake");   // kumikislap na pagyanig
     };

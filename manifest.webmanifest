@@ -1,0 +1,15 @@
+{
+  "id": "./index.html",
+  "name": "Chord Library",
+  "short_name": "Chord Library",
+  "description": "Chord Library for Dampalit Bethel Assembly of God",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#070519",
+  "theme_color": "#11113d",
+  "icons": [
+    { "src": "icons/chord-library.svg?v=2", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

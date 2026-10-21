@@ -74,6 +74,12 @@ header { text-align: center; padding: 16px 70px 8px; }
 .church { margin: 4px 0 0; font-style: italic; font-size: 1.2rem; color: #a58cff; }
 .icon-btn { background: none; border: none; color: #cfd3e6; font-size: 2rem; cursor: pointer; }
 #settingsBtn { position: absolute; top: 14px; right: 24px; }   /* gear: kanan sa laptop */
+.install-btn {
+  position: absolute; top: 18px; right: 76px; padding: 7px 12px; border-radius: 18px;
+  border: var(--glass-border); color: var(--text); background: rgba(20, 25, 90, .65);
+  font: 700 .82rem "Cormorant Garamond", Georgia, serif; letter-spacing: .5px; cursor: pointer;
+}
+.install-btn[hidden] { display: none; }
 
 /* ===== LAYOUT (laptop): sidebar sa kaliwa, panel sa kanan ===== */
 #layout { display: flex; gap: 24px; padding: 16px 24px 24px; }
@@ -139,24 +145,27 @@ header { text-align: center; padding: 16px 70px 8px; }
 @media (max-width: 800px) {
   header { padding: 14px 56px 6px; }
   #settingsBtn { right: auto; left: 14px; }          /* gear: kaliwa sa phone */
+  .install-btn { top: 16px; right: 12px; padding: 5px 9px; font-size: .75rem; }
   #layout { flex-direction: column; padding: 12px; }
   #sidebar { width: 100%; }
   #panel { display: none; }                          /* nakatago hanggang may pinindot na kanta */
   body.show-song #sidebar { display: none; }
   body.show-song #panel { display: flex; padding: 18px; height: calc(100vh - 110px); }
-  #backBtn { display: none; }                         /* tinanggal na ang back arrow sa phone */
+  body.show-song #songTitle { font-size: 1.4rem; line-height: 1.15; margin-bottom: 6px; }
+  body.show-song #chords { font-size: .9rem; line-height: 1.45; }
+  body.page-main.show-song #backBtn { display: none; }
   /* Sunday Line-up: phone lang, piliin ang kanta para dumiretso sa chords. */
   body.page-lineup #songBox h2 { display: none; }
   body.page-lineup #songBox { margin-top: 0; padding: 0; border: 0; background: transparent; }
   body.page-lineup #songList { padding: 0; max-height: calc(100vh - 170px); }
   body.page-lineup.lineup-song #sidebar { display: none; }
   body.page-lineup.lineup-song #panel { display: flex; padding: 18px; height: calc(100vh - 90px); }
-  body.page-lineup.lineup-song #songTitle { font-size: 1.6rem; margin-bottom: 4px; }
+  body.page-lineup.lineup-song #songTitle { font-size: 1.35rem; margin-bottom: 4px; }
   body.page-lineup.lineup-song #chords {
     width: calc(100% + 20px); margin-left: -10px; padding: 18px 12px;
-    font-size: 1.15rem; line-height: 1.55;
+    font-size: .9rem; line-height: 1.45;
   }
-  body.page-lineup #backBtn { display: block; align-self: flex-start; margin: -8px 0 4px -8px; }
+  body.page-lineup #backBtn { display: none; }
 }
 
 /* ===== STEP 2 & 3: LINE-UP PAGE, DEVELOPER PAGE ===== */
@@ -345,7 +354,9 @@ body.page-dev #logoutBtn {
 }
 body.page-dev #logoutBtn:hover { color: #fff; background: rgba(217, 69, 59, .55); }
 @media (max-width: 800px) {
-  body.page-dev #logoutBtn { top: 16px; right: 10px; font-size: .85rem; padding: 4px 8px; }
+  body.page-dev header { padding: 12px 48px 42px; }
+  body.page-dev header .glitch { font-size: clamp(1.2rem, 6vw, 1.6rem); letter-spacing: 1px; }
+  body.page-dev #logoutBtn { top: 55px; right: 12px; font-size: .8rem; padding: 4px 9px; }
 }
 
 /* Shared glass action buttons in the song lists. */

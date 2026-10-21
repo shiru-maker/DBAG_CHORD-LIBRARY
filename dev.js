@@ -1,9 +1,8 @@
 /* dev.js = Developer Page: dagdag / edit / delete ng kanta */
 
-// ISANG LOCK LANG: ang login ng Supabase. Kapag naka-login na sa device na ito, diretso pasok (walang hihingin).
-// Kapag hindi pa naka-login at nag-cancel, babalik sa main page.
-DB.ensureLogin().then((ok) => {
-  if (!ok) { location.replace("index.html"); return; }
+// Developer Page: code lang ang hinihingi; walang email login.
+unlock().then((unlocked) => {
+  if (!unlocked) { location.replace("index.html"); return; }
   document.body.style.visibility = "visible";
   init();
 });
@@ -95,15 +94,20 @@ function fillForm(s) {                    // s = kantang ie-edit, o {} para sa b
   syncKey();
 }
 
+$("fBpm").addEventListener("input", (e) => {
+  e.target.value = e.target.value.replace(/\D/g, "").slice(0, 3);
+});
+
 $("saveBtn").onclick = () => {
   const title = $("fTitle").value.trim();
   if (!title) return toast("Please enter a Song Title.");
+  const bpm = $("fBpm").value.trim();
+  if (bpm && !/^\d{1,3}$/.test(bpm)) return toast("BPM must contain up to 3 digits only.");
   const singers = {};
   document.querySelectorAll("#keyList input").forEach((i) => { if (i.value.trim()) singers[i.dataset.key] = i.value.trim(); });
   const song = { id: editingId || crypto.randomUUID(), title, artist: $("fBy").value.trim(), song_key: $("fKey").value,
-                 bpm: $("fBpm").value.trim(), chords: $("fChords").value, singers };
-  guard(async () => {
-    await DB.saveSong(song);
+                 bpm, chords: $("fChords").value, singers };
+  DB.saveSong(song).then(() => {
     const i = songs.findIndex((x) => x.id === song.id);
     if (i >= 0) songs[i] = song; else songs.push(song);
     songs.sort((a, b) => a.title.localeCompare(b.title, undefined, { sensitivity: "base", numeric: true }));
@@ -111,7 +115,7 @@ $("saveBtn").onclick = () => {
     fillForm({});                                          // linisin ang form, handa na para sa susunod na kanta
     const b = $("saveBtn"); b.textContent = "SAVED \u2713";   // maliit na palatandaan sa mismong button
     setTimeout(() => (b.textContent = "SAVE"), 1500);
-  });
+  }).catch((e) => toast("Could not save song: " + (e.message || e)));
 };
 
 /* ===== EDIT PANEL (kanan): pindutin ang title = i-edit sa form, X = burahin ===== */
@@ -138,12 +142,11 @@ function editSong(s) {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 function deleteSong(s) {
-  guard(async () => {
-    await DB.deleteSong(s.id);
+  DB.deleteSong(s.id).then(() => {
     songs = songs.filter((x) => x.id !== s.id);
     if (editingId === s.id) fillForm({});                // kung yun ang naka-edit, linisin ang form
     renderDelList();
-  });
+  }).catch((e) => toast("Could not delete song: " + (e.message || e)));
 }
 $("editBtn").onclick = () => {
   const open = $("delPanel").classList.toggle("open");   // pindutin ulit = isara
@@ -155,7 +158,11 @@ document.addEventListener("click", (e) => {
 $("newBtn").onclick = () => { fillForm({}); renderDelList(); };   // blangkong form para sa bagong kanta
 $("delSearch").oninput = renderDelList;
 
-$("logoutBtn").onclick = async () => { await DB.logout(); location.href = "index.html"; };   // burahin ang login sa device na ito
+$("logoutBtn").onclick = async () => {
+  localStorage.removeItem(DEV_UNLOCK_KEY);
+  await DB.logout();
+  location.href = "index.html";
+};   // logout = alisin ang Developer unlock sa device na ito
 
 buildForm();
 DB.getSongs().then((s) => { songs = s; }).catch((e) => toast("Failed to load data: " + e.message));

@@ -9,9 +9,14 @@ function renderList() {
   $("dots").innerHTML = "";
 }
 function removeSong(id) {
-  guard(async () => { const ids = lineup.filter((x) => x !== id); await DB.setLineup(ids); lineup = ids; renderList(); });
+  const ids = lineup.filter((x) => x !== id);
+  DB.setLineup(ids).then(() => { lineup = ids; renderList(); })
+    .catch((e) => toast("Could not update Sunday Line-up: " + (e.message || e)));
 }
-Promise.all([DB.getSongs(), DB.getLineup()]).then(([s, l]) => { songs = s; lineup = l; renderList(); })
+Promise.all([DB.getSongs(), DB.getLineup()]).then(([s, l]) => {
+  songs = s; lineup = l; renderList();
+  if (window.matchMedia("(max-width: 800px)").matches && navList.length) openSong(navList[0]);
+})
   .catch((e) => toast("Failed to load data: " + e.message));
 
 // Phone lang: buksan agad ang chord view mula sa Sunday Line-up listahan.
